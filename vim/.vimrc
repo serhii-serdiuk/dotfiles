@@ -109,10 +109,10 @@ nnoremap <m-k> -
 
 inoremap <m-j> <down>
 inoremap <m-k> <up>
-inoremap <m-h> <left>
-inoremap <m-l> <right>
-imap <m-b> <c-o>b
-imap <m-f> <c-o>w
+inoremap <m-b> <left>
+inoremap <m-f> <right>
+imap <m-h> <c-o>b
+imap <m-l> <c-o>w
 imap <m-w> <c-o>db
 imap <m-d> <c-o>dw
 inoremap <m-p> <c-r>"
