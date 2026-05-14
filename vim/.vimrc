@@ -883,6 +883,12 @@ noremap <leader>ofc :FrameworksCraftDir!<cr>
 noremap <leader>ob :Buffers<cr>
 noremap <leader>bo :Buffers<cr>
 
+" Override Rg (ripgrep) command to also search hidden files (excluding .git)
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case --hidden --glob "!.git" ' . shellescape(<q-args>),
+  \   1, fzf#vim#with_preview(), <bang>0)
+
 " Grep recursively through all of the files in current dir via ripgrep
 " NOTE: consider adding 's' prefix in case of conficts with mappings for Git
 noremap <leader>ga :<c-w>Rg<cr>
@@ -1295,7 +1301,7 @@ augroup END
 " Return to the last cursor position when opening files
 autocmd BufReadPost *
   \ if line("'\"") > 0 && line("'\"") <= line("$") |
-  \     execute "normal! `\"" |
+  \   execute "normal! `\"" |
   \ endif
 
 " Enable syntax highlighting for additional set of files
