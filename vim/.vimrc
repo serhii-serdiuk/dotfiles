@@ -532,10 +532,14 @@ noremap <leader>y. :let @0=expand('%:t:r')<cr>
 vnoremap <leader>yc "+y
 nnoremap <leader>yc :let @+=@0<cr>
 noremap <leader>cy :let @0=@+<cr>
+if !exists('g:vscode')
+  nnoremap <leader>yc :call system('wl-copy', @0)<cr>
+  noremap <leader>cy :let @0=system('wl-paste --no-newline')<cr>
+endif
 
 " Pasting from the different registers
-noremap <leader>pc "+p
-noremap <leader>Pc "+P
+map <leader>pc "+p
+map <leader>Pc "+P
 
 noremap <leader>py "0p
 noremap <leader>Py "0P
@@ -718,6 +722,9 @@ Plug 'chaoren/vim-wordmotion'
 
 " Improved substitution
 Plug 'wincent/scalpel'
+
+" Wayland clipboard support
+Plug 'jasonccox/vim-wayland-clipboard'
 
 " Fuzzy find everything
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
