@@ -65,23 +65,26 @@ noremap zh 5zh
 noremap J }
 noremap K {
 
-" noremap <s-cr> -
-
 noremap M @@
 
 noremap U <c-r>
 
-inoremap <c-j> <c-o>dd<c-o>p
-inoremap <c-k> <c-o>dd<c-o>k<c-o>P
-inoremap <c-l> <right>
 inoremap <c-d> <c-o>x
 inoremap <c-t> <c-o>x<c-o>p<c-o>h
+inoremap <c-j> <c-o>dd<c-o>p
+inoremap <c-k> <c-o>dd<c-o>k<c-o>P
+
+vnoremap <c-j> dp
+vnoremap <c-k> dkP
 
 " TODO: doesn't work for some reason, check with another terminal
 " inoremap <c-,> <c-d>
 " inoremap <c-.> <c-t>
 
-" inoremap <c-l> <c-x><c-l>
+" Built-in completion
+inoremap <c-n> <c-x><c-n>
+inoremap <c-p> <c-x><c-p>
+inoremap <c-l> <c-x><c-l>
 inoremap <c-f> <c-x><c-f>
 
 cabbrev h vert h
@@ -1171,11 +1174,8 @@ nnoremap <leader>fx :ALEFix<cr>
 " vnoremap <leader>aa :ALECodeAction<cr>
 
 " ===== asyncomplete plugin
-inoremap <expr> <tab>   pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<c-d>"
-inoremap <expr> <c-j>   pumvisible() ? "\<c-n>" : "\<c-o>j"
-inoremap <expr> <c-k>   pumvisible() ? "\<c-p>" : "\<c-o>k"
-inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+inoremap  <expr> <cr>   pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+imap      <expr> <tab>  pumvisible() ? "\<c-n><cr>" : "\<tab>"
 
 " imap <c-space> <plug>(asyncomplete_force_refresh)
 " For Vim 8 (<c-@> corresponds to <c-space>):
