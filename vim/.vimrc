@@ -515,20 +515,23 @@ nnoremap <leader>rcl :cdo s///c<left><left>
 " nnoremap <leader>clm :cdo! norm @
 
 " Copy current file path/name
-" TODO: replace yank register 0 with clipboard register + everywhere
 " Relative path
 noremap <leader>yr :let @+=@%<cr>
-if !exists('g:vscode')
-  noremap <leader>yr :let @0=@%<cr>
-endif
 " Absolute path
-noremap <leader>yp :let @0=expand('%:p')<cr>
+noremap <leader>yp :let @+=expand('%:p')<cr>
 " Relative dir
-noremap <leader>yd :let @0=expand('%:h')<cr>
+noremap <leader>yd :let @+=expand('%:h')<cr>
 " Name
-noremap <leader>yn :let @0=expand('%:t')<cr>
+noremap <leader>yn :let @+=expand('%:t')<cr>
 " Name without extention
-noremap <leader>y. :let @0=expand('%:t:r')<cr>
+noremap <leader>y. :let @+=expand('%:t:r')<cr>
+if !exists('g:vscode')
+  noremap <leader>yr :call system('wl-copy', @%)<cr>
+  noremap <leader>yp :call system('wl-copy', expand('%:p'))<cr>
+  noremap <leader>yd :call system('wl-copy', expand('%:h'))<cr>
+  noremap <leader>yn :call system('wl-copy', expand('%:t'))<cr>
+  noremap <leader>y. :call system('wl-copy', expand('%:t:r'))<cr>
+endif
 
 " Copy/paste using different registers
 " Synchronization between yank register and clipboard
