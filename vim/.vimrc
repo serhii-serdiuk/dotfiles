@@ -1186,13 +1186,28 @@ let g:asyncomplete_auto_completeopt = 0
 set completeopt=menuone,noinsert,noselect,preview
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
-" au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+autocmd User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
   \   'name': 'buffer',
   \   'allowlist': ['*'],
   \   'blocklist': ['go'],
   \   'completor': function('asyncomplete#sources#buffer#completor')
   \ }))
+
+" asyncomplete-buffer indexes on BufWinEnter, but b:asyncomplete_enable is only
+" set on BufEnter which fires after BufWinEnter — so freshly opened buffers are
+" never indexed. InsertEnter fires after both, with no ambiguity about which
+" buffer is current, making it a reliable trigger for the initial indexing.
+function! s:asyncomplete_initial_index()
+  if get(b:, 'asyncomplete_enable', 0) && !get(b:, 'asyncomplete_buffer_indexed', 0)
+    let l:buffer_info = asyncomplete#get_source_info('buffer')
+    call l:buffer_info.on_event(l:buffer_info, {}, 'BufWinEnter')
+    let b:asyncomplete_buffer_indexed = 1
+  endif
+endfunction
+
+autocmd InsertEnter * call s:asyncomplete_initial_index()
+" TODO: prepare a PR to asyncomplete-buffer to handle this logic inside plugin
+" see also solution from https://github.com/prabirshrestha/asyncomplete-buffer.vim/issues/17#issuecomment-1183146073
 
 " ===== goyo plugin
 nnoremap <silent> <leader>F :Goyo<cr>
