@@ -1182,6 +1182,7 @@ imap      <expr> <tab>  pumvisible() ? "\<c-n><cr>" : "\<tab>"
 imap <c-@> <plug>(asyncomplete_force_refresh)
 
 " Preview popup
+let g:asyncomplete_min_chars = 3
 let g:asyncomplete_auto_completeopt = 0
 set completeopt=menuone,noinsert,noselect,preview
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
@@ -1190,7 +1191,10 @@ autocmd User asyncomplete_setup call asyncomplete#register_source(asyncomplete#s
   \   'name': 'buffer',
   \   'allowlist': ['*'],
   \   'blocklist': ['go'],
-  \   'completor': function('asyncomplete#sources#buffer#completor')
+  \   'completor': function('asyncomplete#sources#buffer#completor'),
+  \   'config': {
+  \     'max_buffer_size': 5000000
+  \   }
   \ }))
 
 " asyncomplete-buffer indexes on BufWinEnter, but b:asyncomplete_enable is only
@@ -1208,6 +1212,36 @@ endfunction
 autocmd InsertEnter * call s:asyncomplete_initial_index()
 " TODO: prepare a PR to asyncomplete-buffer to handle this logic inside plugin
 " see also solution from https://github.com/prabirshrestha/asyncomplete-buffer.vim/issues/17#issuecomment-1183146073
+
+" Custom preprocessor for asyncomplete (core): replicate the default
+" prefix-filtering logic but also exclude the exact base keyword.
+" Root cause: asyncomplete-buffer's completor calls s:refresh_keyword_incremental
+" on every keystroke, inserting the currently typed word into the global s:words
+" dict. asyncomplete's own default preprocessor never strips exact matches, so
+" the word you're typing always surfaces as the first candidate. This hook
+" (g:asyncomplete_preprocessor) replaces s:default_preprocessor and adds the
+" exclusion.
+" NOTE: as bonus, this also enables case-sensitive filtering for buffer source,
+" which is more intuitive when the user explicitly types uppercase letters.
+function! s:asyncomplete_no_self_complete(options, matches) abort
+    let l:items = []
+    let l:startcols = []
+    for [l:source_name, l:source_matches] in items(a:matches)
+        let l:startcol = l:source_matches['startcol']
+        let l:base = a:options['typed'][l:startcol - 1:]
+        for l:item in l:source_matches['items']
+            if empty(l:base) || (stridx(l:item['word'], l:base) == 0 && l:item['word'] !=# l:base)
+                call add(l:items, l:item)
+                let l:startcols += [l:startcol]
+            endif
+        endfor
+    endfor
+    if empty(l:items) | return | endif
+    let a:options['startcol'] = min(l:startcols)
+    call asyncomplete#preprocess_complete(a:options, l:items)
+endfunction
+let g:asyncomplete_preprocessor = [function('s:asyncomplete_no_self_complete')]
+" TODO: prepare a PR to asyncomplete-buffer/asyncomplete to handle this logic inside plugin
 
 " ===== goyo plugin
 nnoremap <silent> <leader>F :Goyo<cr>
