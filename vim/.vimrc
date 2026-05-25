@@ -535,11 +535,14 @@ endif
 
 " Copy/paste using different registers
 " Synchronization between yank register and clipboard
-vnoremap <leader>yc "+y
+vmap <leader>yc "+y
+vmap <leader>yy "+y
 nnoremap <leader>yc :let @+=@0<cr>
+nnoremap <leader>yy :let @+=@0<cr>
 noremap <leader>cy :let @0=@+<cr>
 if !exists('g:vscode')
   nnoremap <leader>yc :call system('wl-copy', @0)<cr>
+  nnoremap <leader>yy :call system('wl-copy', @0)<cr>
   noremap <leader>cy :let @0=system('wl-paste --no-newline')<cr>
 endif
 
