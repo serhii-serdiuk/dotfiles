@@ -144,6 +144,8 @@ nnoremap <c-q> :q<cr>
 nnoremap <leader>S :shell<cr>
 autocmd TerminalOpen * tnoremap <buffer> <c-w>S <c-w>:shell<cr>
 let g:initial_cwd = getcwd(-1)
+
+" TODO: looks like vim-rooter does the job, consider removing this block
 nnoremap <leader>rdl :execute 'lcd' fnameescape(g:initial_cwd)<cr>
 nnoremap <leader>rdt :execute 'tcd' fnameescape(g:initial_cwd)<cr>
 command -nargs=1 -complete=dir ChangeGlobalWorkingDir cd <args> | call ResetLocalDirsToGlobal()
@@ -151,6 +153,7 @@ nnoremap <leader>rdg :ChangeGlobalWorkingDir <c-r>=expand(g:initial_cwd) . '/'<c
 nnoremap <leader>cdl :lcd <c-r>=expand('%:.:h') . '/'<cr>
 nnoremap <leader>cdt :tcd <c-r>=expand('%:.:h') . '/'<cr>
 nnoremap <leader>cdg :ChangeGlobalWorkingDir <c-r>=expand('%:.:h') . '/'<cr>
+
 nnoremap <leader>e :e <c-r>=expand('%:.:h') . '/'<cr>
 " https://vimways.org/2019/vim-and-the-working-directory/
 
@@ -735,6 +738,9 @@ Plug 'wincent/scalpel'
 " Wayland clipboard support
 Plug 'jasonccox/vim-wayland-clipboard'
 
+" Change working directory to project root
+Plug 'airblade/vim-rooter'
+
 " Fuzzy find everything
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -819,12 +825,17 @@ if !exists('g:vscode')
 endif
 " vmap <leader>rw <plug>(ScalpelVisual)
 
+" ===== vim-rooter plugin
+let g:rooter_patterns = ['.git', 'CMakeLists.txt', '.root', '=CraftRoot', '=gcc_64']
+" let g:rooter_resolve_links = 1
+
 " ===== fzf plugin
 " All files recursively from current working directory (pwd)
-noremap <leader>oa :Files!<cr>
+noremap <leader>oo :Files!<cr>
+noremap <leader>oa :Files! <c-r>=g:initial_cwd<cr><cr>
 " Everything from current working directory except .gitignore
 noremap <leader>og :GFiles! --cached --others --exclude-standard<cr>
-noremap <leader>oo :GFiles! --cached --others --exclude-standard<cr>
+noremap <leader>O :GFiles! --cached --others --exclude-standard<cr>
 " History of opened files (recent files)
 noremap <leader>or :History<cr>
 " noremap <leader>or :call fzf#vim#history(fzf#vim#with_preview({"options": ["--layout=reverse"]}), 0)<cr>
