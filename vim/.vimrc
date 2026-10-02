@@ -973,24 +973,168 @@ command! -bang Buffers call s:buffers_short(<bang>0)
 noremap <leader>ob :Buffers<cr>
 noremap <leader>bo :Buffers<cr>
 
-" Override Rg (ripgrep) command to also search hidden files (excluding .git)
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case --hidden --glob "!.git" ' . shellescape(<q-args>),
-  \   1, fzf#vim#with_preview(), <bang>0)
+" Ripgrep command options
+let g:rg_base_opts = 'rg --column --line-number --no-heading --color=always --smart-case --hidden'
+let g:rg_opts_exclude_git = g:rg_base_opts . ' --glob "!.git"'
+let g:rg_opts_no_ignore = g:rg_opts_exclude_git . ' --no-ignore'
 
-" Grep recursively through all of the files in current dir via ripgrep
-" NOTE: consider adding 's' prefix in case of conficts with mappings for Git
-noremap <leader>ga :<c-w>Rg<cr>
+" Override ripgrep command to also search hidden files including files from .gitignore in current working directory
+command! -bang -nargs=* Rg call fzf#vim#grep(g:rg_opts_no_ignore . ' ' . shellescape(<q-args>),
+  \ 1, fzf#vim#with_preview(), <bang>0)
+
+" Override ripgrep command to also search hidden files including files from .gitignore in initial current working directory
+command! -bang -nargs=* RgAll call fzf#vim#grep(g:rg_opts_no_ignore . ' ' . shellescape(<q-args>),
+  \ 1, fzf#vim#with_preview({'dir': g:initial_cwd}), <bang>0)
+
+" Override ripgrep command to also search hidden files in initial current working directory but exclude files from .gitignore
+command! -bang -nargs=* RgProj call fzf#vim#grep(g:rg_opts_exclude_git . ' ' . shellescape(<q-args>),
+  \ 1, fzf#vim#with_preview({'dir': g:initial_cwd}), <bang>0)
+
+" Grep for the input query in different scopes
 noremap <leader>gg :<c-w>Rg<cr>
-" Grep for word under cursor
-nmap <leader>gw <leader>sw:exec "Rg ".expand('<cword>')<cr>
-nmap <leader>gW <leader>sW:exec "Rg ".expand(getreg('/'))<cr>
-vmap <leader>gw <leader>sw:exec "Rg ".expand(getreg('/'))<cr>
-" Search through the content of the current buffer
-noremap <leader>gc :BLines<cr>
-" Search through the content of all opened buffers
-noremap <leader>go :Lines<cr>
+noremap <leader>gaa :<c-w>RgAll<cr>
+noremap <leader>gpp :<c-w>RgProj<cr>
+noremap <leader>gP :<c-w>RgProj<cr>
+" Grep for the word under cursor in different scopes; visual-select text to search for the selected text
+nmap <leader>gw <leader>sw:exec "Rg " . expand('<cword>')<cr>
+vmap <leader>gw <leader>sw:exec "Rg " . expand(getreg('/'))<cr>
+nmap <leader>gW <leader>sW:exec "Rg " . expand(getreg('/'))<cr>
+
+nmap <leader>gaw <leader>sw:exec "RgAll " . expand('<cword>')<cr>
+vmap <leader>gaw <leader>sw:exec "RgAll " . expand(getreg('/'))<cr>
+nmap <leader>gaW <leader>sW:exec "RgAll " . expand(getreg('/'))<cr>
+
+nmap <leader>gpw <leader>sw:exec "RgProj " . expand('<cword>')<cr>
+vmap <leader>gpw <leader>sw:exec "RgProj " . expand(getreg('/'))<cr>
+nmap <leader>gpW <leader>sW:exec "RgProj " . expand(getreg('/'))<cr>
+
+" Grep through the content of the current buffer with preview
+function! s:blines_source() abort
+  let l:file = expand('%:p')
+  let l:result = []
+  let l:i = 1
+  for l:line in getline(1, '$')
+    call add(l:result, l:file . ':' . l:i . "\t" . printf("\x1b[33m %4d \x1b[m", l:i) . "\t" . l:line)
+    let l:i += 1
+  endfor
+  return l:result
+endfunction
+
+function! s:blines_sink(lines) abort
+  if len(a:lines) < 2 | return | endif
+  let l:key = a:lines[0]
+  if l:key ==# 'ctrl-l'
+    let l:qfl = []
+    for l:line in a:lines[1:]
+      let l:c = split(l:line, "\t", 1)
+      let l:lnum = str2nr(substitute(l:c[1], '\e\[[0-9;]*m', '', 'g'))
+      call add(l:qfl, {'filename': expand('%'), 'lnum': l:lnum, 'text': join(l:c[2:], "\t")})
+    endfor
+    call setqflist(l:qfl) | copen | cc
+    return
+  endif
+  let l:Cmd = get(get(g:, 'fzf_action', {}), l:key, '')
+  if type(l:Cmd) == type('') && !empty(l:Cmd) | execute l:Cmd | endif
+  execute str2nr(substitute(split(a:lines[1], "\t", 1)[1], '\e\[[0-9;]*m', '', 'g'))
+  normal! ^zvzz
+endfunction
+
+function! s:blines_with_preview(query, bang) abort
+  let l:extra = fzf#vim#with_preview({'placeholder': '{1}'})
+  let l:extra.source = s:blines_source()
+  let l:extra['sink*'] = function('s:blines_sink')
+  let l:extra.options = get(l:extra, 'options', []) + [
+    \ '--delimiter=\t', '--with-nth=2..', '--nth=3..',
+    \ '--no-hscroll', '--preview-window', '+{2}/2']
+  if !empty(a:query)
+    let l:extra.options += ['--query', a:query]
+  endif
+  call fzf#vim#buffer_lines(l:extra, a:bang)
+endfunction
+
+command! -bang -nargs=* BLines call s:blines_with_preview(<q-args>, <bang>0)
+
+noremap <leader>gcc :BLines<cr>
+nmap <leader>gcw <leader>sw:exec "BLines " . expand('<cword>')<cr>
+vmap <leader>gcw <leader>sw:exec "BLines " . expand(getreg('/'))<cr>
+nmap <leader>gcW <leader>sW:exec "BLines " . expand(getreg('/'))<cr>
+
+" Grep through the content of all opened buffers with preview and longer buffer paths
+function! s:lines_source() abort
+  let [l:has_names, l:lines] = fzf#vim#_lines(1)
+  let l:paths = {}
+  let l:short = {}
+  let l:longest = 0
+  for l:b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
+    let l:paths[l:b] = fnamemodify(bufname(l:b), ':p')
+    if l:has_names
+      let l:short[l:b] = s:short_bufpath(bufname(l:b))
+      let l:longest = max([l:longest, len(l:short[l:b])])
+    endif
+  endfor
+  let l:maxlen = min([40, l:longest])
+  " Extract ANSI colors from the plugin's output (start = bufname color, end = lnum color)
+  let l:color = ''
+  let l:lnum_color = ''
+  if l:has_names && !empty(l:lines)
+    let l:sample = split(l:lines[0], "\t", 1)[1]
+    let l:color = matchstr(l:sample, '^\(\e\[[0-9;]*m\)*')
+    let l:lnum_color = matchstr(l:sample, '\(\e\[[0-9;]*m\)*$')
+  endif
+  let l:result = []
+  for l:line in l:lines
+    let l:p = split(l:line, "\t", 1)
+    let l:nr = str2nr(substitute(l:p[0], '\e\[[0-9;]*m', '', 'g'))
+    let l:ln = str2nr(substitute(get(l:p, 2, '0'), '\e\[[0-9;]*m', '', 'g'))
+    if l:has_names
+      let l:n = get(l:short, l:nr, '')
+      if len(l:n) > l:maxlen | let l:n = '…' . l:n[-l:maxlen+1:] | endif
+      let l:p[1] = l:color . printf('%' . l:maxlen . 's', l:n) . "\x1b[m" . l:lnum_color
+    endif
+    call add(l:result, get(l:paths, l:nr, '') . ':' . l:ln . "\t" . join(l:p, "\t"))
+  endfor
+  return [l:has_names, l:result]
+endfunction
+
+function! s:lines_sink(lines) abort
+  if len(a:lines) < 2 | return | endif
+  let l:key = a:lines[0]
+  if l:key ==# 'ctrl-l'
+    let l:qfl = []
+    for l:line in a:lines[1:]
+      let l:c = split(l:line, "\t", 1)
+      call add(l:qfl, {'bufnr': str2nr(substitute(l:c[1], '\e\[[0-9;]*m', '', 'g')),
+        \ 'lnum': str2nr(substitute(l:c[3], '\e\[[0-9;]*m', '', 'g')),
+        \ 'text': join(l:c[4:], "\t")})
+    endfor
+    call setqflist(l:qfl) | copen | cc
+    return
+  endif
+  let l:Cmd = get(get(g:, 'fzf_action', {}), l:key, '')
+  if type(l:Cmd) == type('') && !empty(l:Cmd) | execute l:Cmd | endif
+  let l:c = split(a:lines[1], "\t", 1)
+  execute 'buffer' str2nr(substitute(l:c[1], '\e\[[0-9;]*m', '', 'g'))
+  execute str2nr(substitute(l:c[3], '\e\[[0-9;]*m', '', 'g'))
+  normal! ^zvzz
+endfunction
+
+function! s:lines_with_preview(query, bang) abort
+  let [l:has_names, l:source] = s:lines_source()
+  let l:extra = fzf#vim#with_preview({'placeholder': '{1}'})
+  let l:extra.source = l:source
+  let l:extra['sink*'] = function('s:lines_sink')
+  let l:extra.options = get(l:extra, 'options', []) + [
+    \ '--delimiter=\t', '--with-nth=2..', '--nth=' . (l:has_names ? 4 : 3) . '..',
+    \ '--no-hscroll', '--preview-window', '+{4}/2']
+  call fzf#vim#lines(a:query, l:extra, a:bang)
+endfunction
+
+command! -bang -nargs=* Lines call s:lines_with_preview(<q-args>, <bang>0)
+
+noremap <leader>goo :Lines<cr>
+nmap <leader>gow <leader>sw:exec "Lines " . expand('<cword>')<cr>
+vmap <leader>gow <leader>sw:exec "Lines " . expand(getreg('/'))<cr>
+nmap <leader>goW <leader>sW:exec "Lines " . expand(getreg('/'))<cr>
 
 " Git status
 noremap <leader>gs :GFiles?<cr>
