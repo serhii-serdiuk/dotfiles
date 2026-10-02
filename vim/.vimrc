@@ -35,7 +35,8 @@ set wildignorecase
 set matchpairs+=<:>
 set iskeyword-=#
 
-set hidden      " Do not keep unlisted buffers
+set hidden      " Do not unload buffers when they are abandoned
+set lazyredraw  " Don't redraw screen during macros/autocmds
 set wildmenu    " Enable enhanced command-line completion menu
 set showcmd     " Show partially typed commands in status line
 set showmatch   " Show matching brackets
@@ -717,6 +718,12 @@ endif
 " Plugins
 filetype off
 
+" Make vim-rooter manual — we trigger it via a deferred timer so the cwd change
+" happens AFTER the buffer is fully displayed (prevents cursor-jump flash when
+" switching between buffers with different project roots).
+let g:rooter_manual_only = 1
+autocmd BufEnter * call timer_start(0, {-> execute('silent! Rooter')})
+
 " Disable LSP fold range requests — we use foldmethod=indent instead
 let g:lsp_fold_enabled = 0
 
@@ -1267,7 +1274,7 @@ autocmd BufEnter * if winnr() == winnr('h') && bufname('#') =~ 'NERD_tree_' && b
 
 " Below is the logic of synchronizing trees on windows switch
 function! s:is_nerd_tree_opened()
-  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+  return exists('t:NERDTreeBufName') && bufwinnr(t:NERDTreeBufName) != -1
 endfunction
 
 let g:nerd_tree_sync_blocked = 0
@@ -1291,8 +1298,21 @@ function! s:sync_nerd_tree()
     endif
   endif
 endfunction
-
 autocmd BufEnter * call s:sync_nerd_tree()
+
+" Reopen NERDTree only in tabs where it was open at save time
+function! s:restore_nerdtree() abort
+  if !exists('g:nerdtree_tabs') || empty(g:nerdtree_tabs) | return | endif
+  let l:cur_tab = tabpagenr()
+  for l:tab in g:nerdtree_tabs
+    execute 'noautocmd tabnext ' . l:tab
+    silent NERDTreeMirror | NERDTreeFocus | wincmd p
+  endfor
+  execute 'noautocmd tabnext ' . l:cur_tab
+  wincmd =
+  unlet! g:nerdtree_tabs
+endfunction
+autocmd SessionLoadPost * call s:restore_nerdtree()
 
 " ===== ranger plugin
 nnoremap <leader>dc :RangerCurrentFileNewTab<cr>
@@ -1539,7 +1559,7 @@ colorscheme dracula
 " colorscheme ayu
 " colorscheme gruvbox
 
-" Functions definition
+" Functions and auto commands
 function! s:foldtext() abort
   return getline(v:foldstart) . '···' . '[' . (v:foldend - v:foldstart + 1) . ' lines]'
 endfunction
@@ -1589,18 +1609,76 @@ function! SetIsKeywordForNonCpp()
   endif
 endfunction
 
-" Set auto commands
-augroup remember_folds
-  autocmd!
-  autocmd BufWinLeave * if expand('%') != '' | mkview | endif
-  autocmd BufWinEnter * if expand('%') != '' | silent! loadview | endif
-augroup END
+function! s:save_session(...) abort
+  let l:session_name = a:0 > 0 ? a:1 : 'default.vim'
 
-" Return to the last cursor position when opening files
-autocmd BufReadPost *
-  \ if line("'\"") > 0 && line("'\"") <= line("$") |
-  \   execute "normal! `\"" |
-  \ endif
+  " Remember which tabs had NERDTree open before closing them
+  let l:nerd_tabs = []
+  let l:cur_tab = tabpagenr()
+  for l:tab in range(1, tabpagenr('$'))
+    execute 'noautocmd tabnext ' . l:tab
+    if s:is_nerd_tree_opened()
+      call add(l:nerd_tabs, l:tab)
+      silent NERDTreeClose
+    endif
+  endfor
+  execute 'noautocmd tabnext ' . l:cur_tab
+
+  " Change to the initial cwd so mksession saves the session file with path relative to it,
+  " it makes the session more portable and resilient to cwd changes by vim-rooter
+  exec "cd " . fnameescape(g:initial_cwd)
+
+  " Re-register buffers with absolute paths so mksession resolves them
+  " correctly relative to the session's cwd (fixes stale relative names
+  " left by vim-rooter cwd changes)
+  let l:cur_buf = bufnr('%')
+  for l:info in getbufinfo({'buflisted': 1})
+    if l:info.name != '' && filereadable(l:info.name)
+      silent execute 'noautocmd buffer ' . l:info.bufnr
+      silent execute 'noautocmd file ' . fnameescape(l:info.name)
+    endif
+  endfor
+  silent execute 'noautocmd buffer ' . l:cur_buf
+
+  let l:session_file = '.vim/sessions/' . l:session_name
+  exec "mksession! " . l:session_file
+
+  " Insert g:nerdtree_tabs before 'doautoall SessionLoadPost' so
+  " the variable exists when s:restore_nerdtree() fires
+  if !empty(l:nerd_tabs)
+    let l:lines = readfile(l:session_file)
+    let l:idx = index(l:lines, 'doautoall SessionLoadPost')
+    if l:idx >= 0
+      call insert(l:lines, 'let g:nerdtree_tabs = ' . string(l:nerd_tabs), l:idx)
+    endif
+    call writefile(l:lines, l:session_file)
+  endif
+
+  " Reopen NERDTree in the tabs that had it
+  let g:nerdtree_tabs = l:nerd_tabs
+  call s:restore_nerdtree()
+endfunction
+
+command! -nargs=? -complete=file SaveSession call s:save_session(<f-args>)
+
+" During session restore, auto-dismiss swap-file warnings (E325) by choosing
+" 'edit anyway' — avoids interactive prompt that leaves buffers empty when the
+" file is already open in another Vim instance.
+autocmd SwapExists * if exists('g:SessionLoad') | let v:swapchoice = 'e' | endif
+
+" Save view (cursor position, folds, etc.) on buffer leave and restore on buffer enter.
+function! s:save_view() abort
+  if expand('%') == '' | return | endif
+  mkview
+endfunction
+
+augroup buffer_view_save_restore
+  autocmd!
+  autocmd BufLeave * call s:save_view()
+  autocmd BufWinLeave * call s:save_view()
+  " Only loadview on first display — with 'set hidden', this avoids a redraw flash on every switch.
+  autocmd BufWinEnter * if expand('%') != '' && !exists('b:view_loaded') | silent! loadview | let b:view_loaded = 1 | endif
+augroup END
 
 " Enable syntax highlighting for additional set of files
 autocmd BufNewFile,BufRead ~/.config/* setfiletype dosini
