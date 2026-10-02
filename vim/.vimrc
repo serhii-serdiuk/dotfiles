@@ -25,7 +25,6 @@ set foldenable
 set foldtext=s:foldtext()
 set fillchars=vert:\|,fold:·,eob:~
 " set fillchars=vert:┃,fold:·,eob:~
-set foldlevelstart=99
 
 set hlsearch
 set incsearch
@@ -718,6 +717,9 @@ endif
 " Plugins
 filetype off
 
+" Disable LSP fold range requests — we use foldmethod=indent instead
+let g:lsp_fold_enabled = 0
+
 call plug#begin()
 
 " Improved defaults
@@ -1328,10 +1330,14 @@ function! s:lsp_scroll_or(amount, fallback) abort
 endfunction
 
 function! s:on_lsp_buffer_enabled() abort
-  set foldmethod=expr
-    \ foldexpr=lsp#ui#vim#folding#foldexpr()
-    " \ foldtext=lsp#ui#vim#folding#foldtext()
-  " setlocal foldlevelstart=99
+  " Use indent folding instead of LSP foldmethod=expr.
+  " The LSP foldexpr is O(lines × ranges) on EVERY redraw — 7+ sec for large C++ files.
+  " Indent folding is fast and gives reasonable results for C/C++.
+  " Only set if file opened first time, it should be restored via loadview for subsequent opens.
+  if &l:foldmethod !=# 'indent'
+    setlocal foldmethod=indent
+    normal! zR
+  endif
 
   setlocal omnifunc=lsp#complete
   setlocal signcolumn=yes
