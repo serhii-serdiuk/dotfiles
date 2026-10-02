@@ -1293,18 +1293,30 @@ endfunction
 autocmd BufEnter * call s:sync_nerd_tree()
 
 " ===== ranger plugin
-nnoremap <leader>dc :Ranger<cr>
-" nnoremap <leader>dw :RangerWorkingDirectory<cr>
-nnoremap <leader>dd :RangerWorkingDirectory<cr>
+nnoremap <leader>dc :RangerCurrentFileNewTab<cr>
+nnoremap <leader>dd :RangerWorkingDirectoryNewTab<cr>
+nnoremap <leader>dp :call <sid>ranger_in_initial_cwd()<cr>
+
+function! s:ranger_in_initial_cwd() abort
+  let l:cwd = getcwd()
+  execute 'tcd ' . fnameescape(g:initial_cwd)
+  RangerWorkingDirectoryNewTab
+  execute 'tcd ' . fnameescape(l:cwd)
+endfunction
 
 let g:ranger_map_keys = 0
+let g:NERDTreeHijackNetrw = 0
+let g:ranger_replace_netrw = 1
 " let g:ranger_command_override = 'ranger --cmd "set show_hidden=true"'
 
 " ===== vim-renamer plugin
-nnoremap <leader>br :Renamer<cr>
+nnoremap <leader>rf :Renamer<cr>
+nnoremap <leader>rt :RenTest<cr>
 nnoremap <leader>rx :Ren<cr>
+" nmap <Leader>rf <Plug>RenamerStart
 
 let g:RenamerShowHidden = 1
+let g:RenamerSupportColonWToRename = 1
 
 " ===== vim-lsp plugin
 function! s:lsp_scroll_or(amount, fallback) abort
