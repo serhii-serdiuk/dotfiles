@@ -929,8 +929,47 @@ noremap <leader>opb :ProjectBuildDir<cr>
 command! -bang FrameworksCraftDir call fzf#vim#files('~/CraftRoot', fzf#vim#with_preview(), <bang>0)
 noremap <leader>ofc :FrameworksCraftDir<cr>
 
+" Currently opened buffers with shortened paths relative to initial_cwd
+function! s:short_bufpath(name) abort
+  if empty(a:name) | return '[No Name]' | endif
+  let l:abs = fnamemodify(a:name, ':p')
+  let l:cwd = fnamemodify(g:initial_cwd, ':p')
+  if l:cwd[-1:] !=# '/' | let l:cwd .= '/' | endif
+  if stridx(l:abs, l:cwd) == 0
+    return l:abs[len(l:cwd):]
+  endif
+  let l:bp = split(l:abs, '/')
+  let l:cp = split(l:cwd, '/')
+  let l:common = 0
+  while l:common < len(l:bp) && l:common < len(l:cp) && l:bp[l:common] ==# l:cp[l:common]
+    let l:common += 1
+  endwhile
+  let l:up = len(l:cp) - l:common
+  if l:up > 3 | return l:abs | endif
+  return repeat('../', l:up) . join(l:bp[l:common:], '/')
+endfunction
 
-" Currently opened buffers
+function! s:format_buffer_short(b) abort
+  let l:line = fzf#vim#_format_buffer(a:b)
+  let l:parts = split(l:line, "\t", 1)
+  let l:name = bufname(a:b)
+  if !empty(l:name) && len(l:parts) >= 4
+    let l:parts[3] = s:short_bufpath(l:name)
+    let l:abs = fnamemodify(l:name, ':p')
+    let l:lnum = getbufinfo(a:b)[0].lnum
+    let l:parts[0] = l:lnum ? l:abs . ':' . l:lnum : l:abs
+  endif
+  return join(l:parts, "\t")
+endfunction
+
+function! s:buffers_short(bang) abort
+  let l:sorted = fzf#vim#_buflisted_sorted()
+  let l:source = map(l:sorted, 's:format_buffer_short(v:val)')
+  call fzf#vim#buffers('', extend(fzf#vim#with_preview({'placeholder': '{1}'}), {'source': l:source}), a:bang)
+endfunction
+
+command! -bang Buffers call s:buffers_short(<bang>0)
+
 noremap <leader>ob :Buffers<cr>
 noremap <leader>bo :Buffers<cr>
 
