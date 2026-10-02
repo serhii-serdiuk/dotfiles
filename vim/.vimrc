@@ -608,11 +608,17 @@ map <leader>} f}-
 nnoremap [< va<<esc>%
 nnoremap ]> va<<esc>
 
-nnoremap <expr> vi{ <sid>brace_select('vi', '{')
-nnoremap <expr> va{ <sid>brace_select('va', '{')
-nnoremap <expr> vi< <sid>brace_select('vi', '<')
-nnoremap <expr> va< <sid>brace_select('va', '<')
+" NOTE: commented out since it breakes potentially usefull default behavior in C++ files
+" nnoremap <expr> vi{ <sid>brace_select('vi', '{')
+" nnoremap <expr> va{ <sid>brace_select('va', '{')
+" nnoremap <expr> vi( <sid>brace_select('vi', '(')
+" nnoremap <expr> va( <sid>brace_select('va', '(')
+" nnoremap <expr> vi[ <sid>brace_select('vi', '[')
+" nnoremap <expr> va[ <sid>brace_select('va', '[')
+" nnoremap <expr> vi< <sid>brace_select('vi', '<')
+" nnoremap <expr> va< <sid>brace_select('va', '<')
 
+" TODO: works only from the line where char is present, maybe makes sense to use brace_select
 nnoremap va' vi'ohol
 nnoremap va" vi"ohol
 
@@ -621,6 +627,7 @@ nnoremap <leader>v( va(V
 nnoremap <leader>v[ va[V
 nnoremap <leader>v< va<V
 if !exists('g:vscode')
+  nnoremap <expr> <leader>v{ getline('.')[col('.'):] =~ '{' ? 'f{vi{' : 'va{V'
   nnoremap <expr> <leader>v( getline('.')[col('.'):] =~ '(' ? 'f(vi(' : 'va(V'
   nnoremap <expr> <leader>v[ getline('.')[col('.'):] =~ '[' ? 'f[vi[' : 'va[V'
   nnoremap <expr> <leader>v< getline('.')[col('.'):] =~ '<' ? 'f<vi<' : 'va<V'
@@ -629,21 +636,35 @@ endif
 nnoremap <leader>v" vi"
 nnoremap <leader>v' vi'
 
-nmap <leader>y{ <leader>v{jy<c-o>
-nmap <leader>Y{ <leader>v{oky<c-o>
+" nmap <leader>y{ <leader>v{jy<c-o>
+" nmap <leader>Y{ <leader>v{oky<c-o>
+" nmap <leader>y{ <leader>v{y
+nnoremap <leader>y{ $va{Vy
 nmap <leader>y( <leader>v(y
 nmap <leader>y[ <leader>v[y
 nmap <leader>y< <leader>v<y
 nmap <leader>y" <leader>v"y
 nmap <leader>y' <leader>v'y
 
-nmap <leader>d{ <leader>v{jd
-nmap <leader>D{ <leader>v{okd
+" nmap <leader>d{ <leader>v{jd
+" nmap <leader>D{ <leader>v{okd
+nnoremap <leader>d{ $va{Vjd
+nnoremap <leader>D{ $va{Vokd
 nmap <leader>d( <leader>v(d
 nmap <leader>d[ <leader>v[d
 nmap <leader>d< <leader>v<d
 nmap <leader>d" <leader>v"d
 nmap <leader>d' <leader>v'd
+
+" TODO: add <leader>c* mappings?
+if !exists('g:vscode')
+  nnoremap <expr> <leader>c{ getline('.')[col('.'):] =~ '{' ? 'f{ci{' : 'ci{'
+  " nnoremap <expr> <leader>v( getline('.')[col('.'):] =~ '(' ? 'f(vi(' : 'va(V'
+  " nnoremap <expr> <leader>v[ getline('.')[col('.'):] =~ '[' ? 'f[vi[' : 'va[V'
+  " nnoremap <expr> <leader>v< getline('.')[col('.'):] =~ '<' ? 'f<vi<' : 'va<V'
+endif
+
+" map <leader>cp to edit whole paragraph?
 
 " Commented mappings here work in Vim by default but doesn't work in Kate, should be added manually
 " Also they don't work in Qt Creator and there is no way to add them,
