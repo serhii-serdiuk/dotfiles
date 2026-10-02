@@ -90,6 +90,11 @@ inoremap <c-f> <c-x><c-f>
 cabbrev h vert h
 cabbrev hh help
 
+" Distinguish <Tab> from <C-I> via modifyOtherKeys (requires xterm/kitty/foot/wezterm etc.)
+" Terminal sends \e[27;5;9~ for C-i, so <Tab>→za no longer hijacks <C-i> jumplist navigation
+let &t_TI = "\<Esc>[>4;2m"
+let &t_TE = "\<Esc>[>4;0m"
+
 " Mappings which use Alt/Meta key
 " Define Alt sequences as terminal key codes (uses ttimeoutlen, not timeoutlen)
 " This avoids the 1-second ESC delay caused by user-mapping approach
@@ -352,9 +357,10 @@ noremap <leader>fC zC
 noremap <leader>ft za
 noremap <leader>fT zA
 " nnoremap <s-@> za
-" nnoremap <tab> za
-" nnoremap <s-tab> zA
-noremap <s-tab> za
+" TODO: uncomment Tab-related mappings when I find terminal which supports modifyOtherKeys
+" to distinguish between <tab> and <c-i>
+" noremap <tab> za
+" noremap <s-tab> zA
 
 noremap <leader>fj ]z
 noremap <leader>fk [z
