@@ -137,13 +137,14 @@ let mapleader = " "
 nnoremap <silent> <leader>co :edit $MYVIMRC<cr>
 nnoremap <silent> <leader>cr :source $MYVIMRC<cr>:nohl<cr>
 
-" nnoremap <silent> <leader>w :silent! w<cr>
-nnoremap <leader>w :w<cr>
+nnoremap <leader>w :up<cr>
+nnoremap <leader>u :up<cr>
 nnoremap <leader>q :q<cr>
+nnoremap <leader>W :wa<cr>
 nnoremap <leader>Q :qa!<cr>
 nnoremap <leader>cq :cq<cr>
-nnoremap <silent> <c-s> :silent! w<cr>
-inoremap <silent> <c-s> <esc>:silent! w<cr>
+nnoremap <silent> <c-s> :silent! up<cr>
+inoremap <silent> <c-s> <esc>:silent! up<cr>
 nnoremap <c-q> :q<cr>
 
 nnoremap <leader>S :shell<cr>
@@ -314,8 +315,8 @@ tnoremap <c-n> <c-w>N:vert res +6<cr>ggG
 nnoremap <expr> i &buftype ==# 'terminal' ? ':vert res -6<cr>i' : 'i'
 autocmd TerminalOpen * tnoremap <buffer> <c-w>m <c-w>Nmgi
 autocmd TerminalOpen * tnoremap <buffer> <c-w><c-m> <c-w>Nmgi
-autocmd TerminalOpen * tnoremap <buffer> <c-w>pp <c-w>"0
 autocmd TerminalOpen * tnoremap <buffer> <c-w>py <c-w>"0
+autocmd TerminalOpen * tnoremap <buffer> <c-w>pp <c-w>"0
 autocmd TerminalOpen * tnoremap <buffer> <c-w>pc <c-w>"+
 
 " Diff
@@ -374,9 +375,6 @@ nnoremap <leader>tc g~iw
 nnoremap Y y$
 nnoremap <leader>V v$h
 nmap <leader>pr <leader>V<leader>py
-nmap <leader>pp <leader>V<leader>py
-nmap <leader>PP <leader>V<leader>py
-nmap <leader><leader>p <leader>V<leader>py
 
 " Select, copy/cut and past the word (including mappings from vim-wordmotion)
 nnoremap <leader>vw viw
@@ -399,11 +397,13 @@ nnoremap <leader>de de
 nnoremap <leader>dW daW
 
 nnoremap <leader>pw viw"0pgvy
-nmap <leader>pW viw"0p
+nmap <leader>pW viW"0pgvy
 
-" Comment and duplicate lines for debugging purposes
-nmap <leader>dl yygccp
-vmap <leader>dl ygvgcgv<c-c>p
+" Duplicate lines or comment out and duplicate (for debugging purposes)
+nmap <leader>dl yyp
+vmap <leader>dl ygv<c-c>p
+nmap <leader>dL yygccp
+vmap <leader>dL ygvgcgv<c-c>p
 
 " Searching and replacing a word (using *)
 " nnoremap * viw"hy*
@@ -418,6 +418,7 @@ nmap <leader>* viw*
 nmap <leader># viw#
 
 map <leader>sw *N
+map <c-h> <leader>sw
 nmap <leader>sW <leader>*N
 
 nmap c* *Ncgn
@@ -492,6 +493,8 @@ noremap <leader>: @:
 
 " Find next character and repeat action
 noremap <leader>.f :let @z=';.'<cr>@z
+noremap <leader>.s :let @z='n.'<cr>@z
+noremap <leader>.S :let @z='nn.'<cr>@z
 
 " Repeat action on next line
 noremap <leader>.j :let @z='j.'<cr>@z
@@ -561,6 +564,9 @@ map <leader>Pc "+P
 
 noremap <leader>py "0p
 noremap <leader>Py "0P
+noremap <leader>PY "0P
+noremap <leader>pp "0p
+noremap <leader>PP "0P
 
 noremap <leader>pd "-p
 noremap <leader>Pd "-P
@@ -570,6 +576,7 @@ noremap <leader>Ps "/P
 
 noremap <leader>ph "hp
 noremap <leader>Ph "hP
+noremap <leader>PH "hP
 
 " Check registers' values
 nnoremap <leader>' :reg<cr>
@@ -852,6 +859,9 @@ noremap <leader>oa :Files <c-r>=g:initial_cwd<cr><cr>
 " Everything from current working directory except .gitignore
 noremap <leader>og :GFiles --cached --others --exclude-standard<cr>
 noremap <leader>O :GFiles --cached --others --exclude-standard<cr>
+
+" TODO: add possibility to open file using the word at current cursor position via <leader>ow (or gd?)
+" can be usefull for opening of QML components implementation files
 
 " History of opened files (recent files)
 noremap <leader>or :History<cr>
@@ -1387,11 +1397,10 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> gpy <plug>(lsp-peek-type-definition)
   nnoremap <buffer> <expr> <m-j> <sid>lsp_scroll_or(+4, '+')
   nnoremap <buffer> <expr> <m-k> <sid>lsp_scroll_or(-4, '-')
-  " nnoremap <buffer> <expr> <m-j> <sid>lsp_scroll_or(+4, ':m .+1<cr>')
-  " nnoremap <buffer> <expr> <m-k> <sid>lsp_scroll_or(-4, ':m .-2<cr>')
 
   nmap <buffer> <leader>cc <plug>(lsp-switch-source-header)
-  nmap <buffer> <leader>rn <plug>(lsp-rename)
+  nmap <buffer> <leader>rs <plug>(lsp-rename)
+  " TODO: use mapping below to rename symbol and files related to it (C++ class, QML component)
   nmap <buffer> <leader>R <plug>(lsp-rename)
   nmap <buffer> <leader>ff <plug>(lsp-document-format)
   map <buffer> <leader>fr <plug>(lsp-document-range-format)
