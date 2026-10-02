@@ -831,81 +831,104 @@ let g:rooter_patterns = ['.git', 'CMakeLists.txt', '.root', '=CraftRoot', '=gcc_
 
 " ===== fzf plugin
 " All files recursively from current working directory (pwd)
-noremap <leader>oo :Files!<cr>
-noremap <leader>oa :Files! <c-r>=g:initial_cwd<cr><cr>
+noremap <leader>oo :Files<cr>
+noremap <leader>oa :Files <c-r>=g:initial_cwd<cr><cr>
+
 " Everything from current working directory except .gitignore
-noremap <leader>og :GFiles! --cached --others --exclude-standard<cr>
-noremap <leader>O :GFiles! --cached --others --exclude-standard<cr>
+noremap <leader>og :GFiles --cached --others --exclude-standard<cr>
+noremap <leader>O :GFiles --cached --others --exclude-standard<cr>
+
 " History of opened files (recent files)
 noremap <leader>or :History<cr>
 " noremap <leader>or :call fzf#vim#history(fzf#vim#with_preview({"options": ["--layout=reverse"]}), 0)<cr>
+
 " Files from current file dir
 command! -bang CurrentDir call fzf#vim#files(expand('%:p:h'), fzf#vim#with_preview(), <bang>0)
-noremap <leader>oc :CurrentDir!<cr>
+noremap <leader>oc :CurrentDir<cr>
+
 " Files recursively from /
 command! -bang SystemRootDir call fzf#vim#files('/', fzf#vim#with_preview(), <bang>0)
-noremap <leader>osr :SystemRootDir!<cr>
+noremap <leader>osr :SystemRootDir<cr>
+
 " Files recursively from /etc
 command! -bang SystemConfigDir call fzf#vim#files('/etc', fzf#vim#with_preview(), <bang>0)
-noremap <leader>osc :SystemConfigDir!<cr>
+noremap <leader>osc :SystemConfigDir<cr>
+
 " Files recursively from /usr
 command! -bang SystemUsrDir call fzf#vim#files('/usr', fzf#vim#with_preview(), <bang>0)
-noremap <leader>osu :SystemUsrDir!<cr>
+noremap <leader>osu :SystemUsrDir<cr>
+
 " Files recursively from /usr/share
 command! -bang SystemShareDir call fzf#vim#files('/usr/share', fzf#vim#with_preview(), <bang>0)
-noremap <leader>oss :SystemShareDir!<cr>
+noremap <leader>oss :SystemShareDir<cr>
+
 " Files recursively from /usr/share/applications
 command! -bang SystemAppsDir call fzf#vim#files('/usr/share/applications', fzf#vim#with_preview(), <bang>0)
-noremap <leader>osa :SystemAppsDir!<cr>
+noremap <leader>osa :SystemAppsDir<cr>
+
 " Files recursively from /usr/lib
 command! -bang SystemLibDir call fzf#vim#files('/usr/lib', fzf#vim#with_preview(), <bang>0)
-noremap <leader>osl :SystemLibDir!<cr>
+noremap <leader>osl :SystemLibDir<cr>
+
 " Files recursively from /usr/lib/python3/dist-packages
 command! -bang SystemPythonPackagesDir call fzf#vim#files('/usr/lib/python3/dist-packages', fzf#vim#with_preview(), <bang>0)
-noremap <leader>osp :SystemPythonPackagesDir!<cr>
+noremap <leader>osp :SystemPythonPackagesDir<cr>
+
 " Files recursively from /usr/lib/python3.8
 command! -bang SystemPython38Dir call fzf#vim#files('/usr/lib/python3.8', fzf#vim#with_preview(), <bang>0)
 " Files recursively from /usr/lib/python3.10
 command! -bang SystemPython310Dir call fzf#vim#files('/usr/lib/python3.10', fzf#vim#with_preview(), <bang>0)
+
 " Files recursively from $HOME dir
 command! -bang UserHomeDir call fzf#vim#files('~', fzf#vim#with_preview(), <bang>0)
-noremap <leader>ouh :UserHomeDir!<cr>
-noremap <leader>oh :UserHomeDir!<cr>
+noremap <leader>ouh :UserHomeDir<cr>
+noremap <leader>oh :UserHomeDir<cr>
+
 " Files recursively from $HOME/.dotfiles dir
 command! -bang UserDotfilesDir call fzf#vim#files('~/.dotfiles', fzf#vim#with_preview(), <bang>0)
-noremap <leader>oud :UserDotfilesDir!<cr>
-noremap <leader>od :UserDotfilesDir!<cr>
+noremap <leader>oud :UserDotfilesDir<cr>
+noremap <leader>od :UserDotfilesDir<cr>
+
 " Files recursively from $HOME/.config dir
 command! -bang UserConfigDir call fzf#vim#files('~/.config', fzf#vim#with_preview(), <bang>0)
-noremap <leader>ouc :UserConfigDir!<cr>
+noremap <leader>ouc :UserConfigDir<cr>
+
 " Files recursively from $HOME/.config/konsave dir
 command! -bang UserConfigKonsaveDir call fzf#vim#files('~/.config/konsave', fzf#vim#with_preview(), <bang>0)
-noremap <leader>ouk :UserConfigKonsaveDir!<cr>
-noremap <leader>ok :UserConfigKonsaveDir!<cr>
+noremap <leader>ouk :UserConfigKonsaveDir<cr>
+noremap <leader>ok :UserConfigKonsaveDir<cr>
+
 " Files recursively from $HOME/.vim dir
 command! -bang UserVimDir call fzf#vim#files('~/.vim', fzf#vim#with_preview(), <bang>0)
-noremap <leader>ouv :UserVimDir!<cr>
-noremap <leader>ov :UserVimDir!<cr>
+noremap <leader>ouv :UserVimDir<cr>
+noremap <leader>ov :UserVimDir<cr>
+
 " Files recursively from $HOME/.shell-utils dir
 command! -bang UserShellUtilsDir call fzf#vim#files('~/.shell-utils', fzf#vim#with_preview(), <bang>0)
-noremap <leader>ouu :UserShellUtilsDir!<cr>
+noremap <leader>ouu :UserShellUtilsDir<cr>
+
 " Files recursively from $HOME/Projects/setup/setup-scripts dir
 command! -bang UserSetupScriptsDir call fzf#vim#files('~/Projects/setup/setup-scripts', fzf#vim#with_preview(), <bang>0)
-noremap <leader>ous :UserSetupScriptsDir!<cr>
+noremap <leader>ous :UserSetupScriptsDir<cr>
+
 " Files recursively from $HOME/Projects/setup/configs-backup dir
 command! -bang UserConfigsBackupDir call fzf#vim#files('~/Projects/setup/configs-backup', fzf#vim#with_preview(), <bang>0)
-noremap <leader>oub :UserConfigsBackupDir!<cr>
+noremap <leader>oub :UserConfigsBackupDir<cr>
+
 " Files recursively from $HOME/Documents/notes dir
 command! -bang UserNotesDir call fzf#vim#files('~/Documents/notes', fzf#vim#with_preview(), <bang>0)
-noremap <leader>oun :UserNotesDir!<cr>
-noremap <leader>on :UserNotesDir!<cr>
+noremap <leader>oun :UserNotesDir<cr>
+noremap <leader>on :UserNotesDir<cr>
+
 " Files recursively from current project build dir
 " command! -bang ProjectBuildDir call fzf#vim#files('build', fzf#vim#with_preview(), <bang>0)
 command! -bang ProjectBuildDir call fzf#vim#files('build-craft', fzf#vim#with_preview(), <bang>0)
-noremap <leader>opb :ProjectBuildDir!<cr>
+noremap <leader>opb :ProjectBuildDir<cr>
+
 " Files recursively from <path>/Frameworks/CraftRoot dir
 command! -bang FrameworksCraftDir call fzf#vim#files('~/CraftRoot', fzf#vim#with_preview(), <bang>0)
-noremap <leader>ofc :FrameworksCraftDir!<cr>
+noremap <leader>ofc :FrameworksCraftDir<cr>
+
 
 " Currently opened buffers
 noremap <leader>ob :Buffers<cr>
@@ -931,12 +954,12 @@ noremap <leader>gc :BLines<cr>
 noremap <leader>go :Lines<cr>
 
 " Git status
-noremap <leader>gs :GFiles!?<cr>
+noremap <leader>gs :GFiles?<cr>
 " Git commits for the current buffer; visual-select lines to track changes in the range
-noremap <leader>glc :BCommits!<cr>
+noremap <leader>glc :BCommits<cr>
 " Git commits (requires fugitive.vim)
-noremap <leader>gla :Commits!<cr>
-noremap <leader>gll :Commits!<cr>
+noremap <leader>gla :Commits<cr>
+noremap <leader>gll :Commits<cr>
 
 " Search through the all commands
 noremap <leader>ca :Commands<cr>
