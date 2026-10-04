@@ -4,6 +4,18 @@
 -- Vim-only bits (Alt keycode hacks, ttymouse, t_Co, wayland clipboard plugin)
 -- are dropped; every drop and Neovim-specific replacement is commented in place.
 
+-- Hard requirement: vim.keymap.set, nvim_create_user_command and
+-- nvim_create_autocmd all appeared in Neovim 0.7 (tested on 0.9.5).
+-- Bail out with a readable message instead of cascading nil-call errors.
+if vim.fn.has('nvim-0.7') == 0 then
+  vim.cmd([[
+    echohl WarningMsg
+    echomsg 'init.lua: this config requires Neovim 0.7+, loading skipped (use vim with ~/.vimrc instead)'
+    echohl None
+  ]])
+  return
+end
+
 -- Reload the whole config (require() caches modules, so plain :source is not enough)
 vim.api.nvim_create_user_command('ReloadConfig', function()
   for name in pairs(package.loaded) do

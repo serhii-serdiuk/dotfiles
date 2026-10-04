@@ -45,7 +45,7 @@ Because files are edited at their deployed paths in day-to-day use, paths inside
 
 ## Neovim config (`nvim/.config/nvim/`)
 
-A **faithful, behavior-identical port** of `vim/.vimrc` to modular Lua — same plugins (vim-plug, vim-lsp/ALE/asyncomplete, fzf.vim, NERDTree), same mappings, same workarounds. When changing one config, mirror the change in the other.
+A **faithful, behavior-identical port** of `vim/.vimrc` to modular Lua — same plugins (vim-plug, vim-lsp/ALE/asyncomplete, fzf.vim, NERDTree), same mappings, same workarounds. When changing one config, mirror the change in the other. Requires **Neovim 0.7+** (`vim.keymap.set` etc.); `init.lua` version-guards and skips loading with a message on older builds.
 
 - `init.lua` requires `lua/config/*` modules in the same order as the `.vimrc` sections; each module's header comment cites the `.vimrc` line range it ports. Module split: `options`, `mappings`, `terminal`, `plugins`, `lsp`, `fzf`, `files` (the `.vimrc`'s "Manage files" plugin group: NERDTree/ranger/renamer), `misc`, `autocmds`.
 - Port conventions: `noremap` → `map('', ...)`; recursive `map`/`nmap` → `{ remap = true }` (often load-bearing — rhs goes through vim-wordmotion/sneak/commentary maps); vimscript `<expr>` logic → Lua functions; rhs strings containing backslashes use `[[...]]` (Lua escaping).
