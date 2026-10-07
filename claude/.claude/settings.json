@@ -1,0 +1,51 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git log:*)",
+      "Bash(git -C * log)",
+      "Bash(git -C * log *)",
+      "Bash(git show:*)",
+      "Bash(git -C * show)",
+      "Bash(git -C * show *)",
+      "Bash(git status:*)",
+      "Bash(git -C * status)",
+      "Bash(git -C * status *)",
+      "Bash(git diff:*)",
+      "Bash(git -C * diff)",
+      "Bash(git -C * diff *)"
+    ]
+  },
+  "model": "opus",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME\"/.claude/hooks/claude-md-guard.sh pre",
+            "timeout": 10,
+            "statusMessage": "Checking instruction-doc conventions"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$HOME\"/.claude/hooks/claude-md-guard.sh post",
+            "timeout": 10,
+            "statusMessage": "Checking instruction-doc conventions"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true
+  },
+  "theme": "dark"
+}

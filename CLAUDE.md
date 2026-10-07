@@ -2,6 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Editing this file
+
+The general rules in `~/.claude/CLAUDE.md` ("Editing CLAUDE.md and AGENTS.md") apply. Specific to this repo:
+
+- Verify by sourcing the shell file, opening vim, or running the headless nvim load below.
+- Facts live in `lua/config/*.lua` headers, `.vimrc` `" =====` section comments and script headers — point there.
+- Most statements have a twin: the paired Vim/Neovim sections and the `basic/` and `setup/` duplicates. Update both.
+
 ## What this repository is
 
 Personal Linux dotfiles (zsh, vim, shell utilities). It is a standalone repository — it is NOT related to the parent directory it may be checked out inside of. There is no build, lint, or test system; changes are verified by sourcing the file or opening vim:
@@ -20,6 +28,7 @@ Each top-level directory is a "package" whose contents map directly onto `$HOME`
 - `nvim/.config/nvim/` → `~/.config/nvim/` (Lua port of the vim config, see below)
 - `shell/.shell-utils/` → `~/.shell-utils/` (sourced libraries)
 - `shell/.scripts/` → `~/.scripts/` (standalone executables, added to `PATH` by `.zshrc`)
+- `claude/.claude/` → `~/.claude/` (global Claude Code instructions, user settings and the instruction-doc hook), deployed with `stow -t ~ claude` from the repo root. `~/.claude/` must already exist as a real directory before stowing — otherwise stow folds it into a single link to the repo, and the sessions, credentials and other runtime state Claude Code keeps there land in the repo. `~/.claude/hooks/` does get folded into a directory link, so a new hook created there is created in the repo.
 
 `bash/` and `system-setup/` exist as empty placeholder directories with no tracked files.
 
