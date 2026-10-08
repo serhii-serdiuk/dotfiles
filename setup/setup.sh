@@ -89,9 +89,10 @@ set_common_packages() {
 
     case $DISTRO in
     Ubuntu|Tuxedo|KDE)
-        pkg_list+=" powerline-gitstatus fonts-firacode neofetch silversearcher-ag" ;;
+        pkg_list+=" powerline-gitstatus gitleaks fonts-firacode neofetch silversearcher-ag" ;;
     Fedora)
         # TODO: check if powerline-gitstatus available
+        # TODO: check if gitleaks available
         pkg_list+=" fira-code-fonts fastfetch fzf the_silver_searcher yazi" ;;
         # NOTE: ffmpeg-free probably needed on Fedora
     esac
@@ -323,6 +324,13 @@ install_packages() {
     popd
 }
 
+# Needs gitleaks installed first: the pre-commit hook runs it on every commit
+enable_dotfiles_git_hooks() {
+    echo
+    log "Enable git hooks of the dotfiles repo (secret scan before each commit)"
+    git -C "$SETUP_DIR/.." config core.hooksPath .githooks
+}
+
 install_python_packages() {
     echo
     log "Installing Python packages..."
@@ -386,6 +394,7 @@ fi
 set_package_manager
 install_updates
 install_packages
+enable_dotfiles_git_hooks
 install_python_packages
 # if [ $DEVELOPMENT_INSTALL = yes ]; then
 #     install_nodejs_packages  # TODO: doesn't work on Fedora, maybe should be reconsider

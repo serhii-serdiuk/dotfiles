@@ -20,7 +20,7 @@ Commit messages follow the pattern `<area>: <description>`, e.g. `vim: adjust ma
 
 ## Layout: stow-style packages mirroring $HOME
 
-Each top-level directory other than `setup/` and `.claude/` is a "package" whose contents map directly onto `$HOME` (each is linked into `$HOME`, e.g. with `stow -t ~ <package>`; `~/.dotfiles` itself is a link to the checkout, created by `setup/`):
+Each top-level directory other than `setup/`, `.claude/` and `.githooks/` is a "package" whose contents map directly onto `$HOME` (each is linked into `$HOME`, e.g. with `stow -t ~ <package>`; `~/.dotfiles` itself is a link to the checkout, created by `setup/`):
 
 - `zsh/.zshenv`, `zsh/.zshrc` → `~/.zshenv`, `~/.zshrc`
 - `vim/.vimrc` → `~/.vimrc`
@@ -30,6 +30,8 @@ Each top-level directory other than `setup/` and `.claude/` is a "package" whose
 - `claude/.claude/` → `~/.claude/` (global Claude Code instructions, user settings and the instruction-doc hook), deployed with `stow -t ~ claude` from the repo root. `~/.claude/` must already exist as a real directory before stowing — otherwise stow folds it into a single link to the repo, and the sessions, credentials and other runtime state Claude Code keeps there land in the repo. `~/.claude/hooks/` does get folded into a directory link, so a new hook created there is created in the repo.
 
 `setup/` is **not** a package — it is a bash installer for a fresh machine (entry point `run-setup.sh`), always run from a full checkout of this repo. Its scripts locate each other and `shell/.shell-utils/functions-sed.sh` relative to their own file (`${BASH_SOURCE[0]}`), never the current directory; keep it that way when adding scripts.
+
+`.githooks/` holds this repo's own git hooks (each file's header says what it does). They only run once a clone has `git config core.hooksPath .githooks`, which `setup/` sets; set it by hand in any other clone.
 
 Because files are edited at their deployed paths in day-to-day use, paths inside the configs refer to `~/.shell-utils`, `~/.scripts`, `~/.dotfiles`, etc. — not to repo-relative paths.
 
