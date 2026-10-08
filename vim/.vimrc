@@ -930,38 +930,38 @@ command! -bang UserHomeDir call fzf#vim#files('~', fzf#vim#with_preview(), <bang
 noremap <leader>ouh :UserHomeDir<cr>
 noremap <leader>oh :UserHomeDir<cr>
 
-" Files recursively from $HOME/.dotfiles dir
+" Files recursively from ~/.dotfiles dir
 command! -bang UserDotfilesDir call fzf#vim#files('~/.dotfiles', fzf#vim#with_preview(), <bang>0)
 noremap <leader>oud :UserDotfilesDir<cr>
 noremap <leader>od :UserDotfilesDir<cr>
 
-" Files recursively from $HOME/.config dir
+" Files recursively from ~/.dotfiles/setup dir
+command! -bang UserSetupScriptsDir call fzf#vim#files('~/.dotfiles/setup' fzf#vim#with_preview(), <bang>0)
+noremap <leader>ous :UserSetupScriptsDir<cr>
+
+" Files recursively from ~/.backup dir
+command! -bang UserBackupDir call fzf#vim#files('~/.backup', fzf#vim#with_preview(), <bang>0)
+noremap <leader>oub :UserBackupDir<cr>
+
+" Files recursively from ~/.config dir
 command! -bang UserConfigDir call fzf#vim#files('~/.config', fzf#vim#with_preview(), <bang>0)
 noremap <leader>ouc :UserConfigDir<cr>
 
-" Files recursively from $HOME/.config/konsave dir
+" Files recursively from ~/.config/konsave dir
 command! -bang UserConfigKonsaveDir call fzf#vim#files('~/.config/konsave', fzf#vim#with_preview(), <bang>0)
 noremap <leader>ouk :UserConfigKonsaveDir<cr>
 noremap <leader>ok :UserConfigKonsaveDir<cr>
 
-" Files recursively from $HOME/.vim dir
+" Files recursively from ~/.vim dir
 command! -bang UserVimDir call fzf#vim#files('~/.vim', fzf#vim#with_preview(), <bang>0)
 noremap <leader>ouv :UserVimDir<cr>
 noremap <leader>ov :UserVimDir<cr>
 
-" Files recursively from $HOME/.shell-utils dir
+" Files recursively from ~/.shell-utils dir
 command! -bang UserShellUtilsDir call fzf#vim#files('~/.shell-utils', fzf#vim#with_preview(), <bang>0)
 noremap <leader>ouu :UserShellUtilsDir<cr>
 
-" Files recursively from $HOME/Projects/setup/setup-scripts dir
-command! -bang UserSetupScriptsDir call fzf#vim#files('~/Projects/setup/setup-scripts', fzf#vim#with_preview(), <bang>0)
-noremap <leader>ous :UserSetupScriptsDir<cr>
-
-" Files recursively from $HOME/Projects/setup/configs-backup dir
-command! -bang UserConfigsBackupDir call fzf#vim#files('~/Projects/setup/configs-backup', fzf#vim#with_preview(), <bang>0)
-noremap <leader>oub :UserConfigsBackupDir<cr>
-
-" Files recursively from $HOME/Documents/notes dir
+" Files recursively from ~/Documents/notes dir
 command! -bang UserNotesDir call fzf#vim#files('~/Documents/notes', fzf#vim#with_preview(), <bang>0)
 noremap <leader>oun :UserNotesDir<cr>
 noremap <leader>on :UserNotesDir<cr>

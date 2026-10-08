@@ -16,7 +16,7 @@ _log() {
 _backup_firefox() {
     _log "Backup Firefox setup"
 
-    local backup_dir=$PROJECTS_DIR/setup/configs-backup
+    local backup_dir=$HOME/.backup
     local firefox_backup_dir=$backup_dir/firefox
     local firefox_dir=$HOME/.mozilla/firefox
     local firefox_profile_dir=$firefox_dir/7ultrj4r.default-release
@@ -41,7 +41,7 @@ _backup_firefox() {
 
 backup-configs() {
     local konsave_profile=configs-plasma$KDE_SESSION_VERSION
-    local backup_dir=$PROJECTS_DIR/setup/configs-backup
+    local backup_dir=$HOME/.backup
 
     _log "Backup konsave profile"
     rm -rf $HOME/.config/konsave/profiles/$konsave_profile
@@ -52,7 +52,7 @@ backup-configs() {
     mv $HOME/$konsave_profile.knsv $backup_dir/
 
     # _log "Backup global configs"
-    # local global_configs_backup_dir=$PROJECTS_DIR/setup/configs-backup/global-configs
+    # local global_configs_backup_dir=$HOME/.backup/global-configs
     # mkdir -p $global_configs_backup_dir/etc
     # cp /etc/tlp.conf $global_configs_backup_dir/etc/
 

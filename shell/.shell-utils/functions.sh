@@ -69,11 +69,11 @@ grep-configs() {
 grep-configs-konsave() {
     local app_name=$1
     local setting_str=$2
-    grep -Rni $HOME/.config/konsave/profiles/configs-backup/**/*"$app_name"* -e "$setting_str" | sort -u
+    grep -Rni $HOME/.config/konsave/profiles/*/**/*"$app_name"* -e "$setting_str" | sort -u
 }
 
 grep-shell-scripts() {
-    dirgrep-filetype $HOME/.shell-utils $HOME/.scripts $PROJECTS_DIR/setup/setup-scripts "sh" "$1"
+    dirgrep-filetype $HOME/.shell-utils $HOME/.scripts $HOME/.dotfiles/setup "sh" "$1"
 }
 
 binpath() {

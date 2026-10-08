@@ -6,13 +6,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The general rules in `~/.claude/CLAUDE.md` ("Editing CLAUDE.md and AGENTS.md") apply. Specific to this repo:
 
-- Verify by sourcing the shell file, opening vim, or running the headless nvim load below.
-- Facts live in `lua/config/*.lua` headers, `.vimrc` `" =====` section comments and script headers — point there.
-- Most statements have a twin: the paired Vim/Neovim sections and the `basic/` and `setup/` duplicates. Update both.
+- Verify a claim before writing it, using the commands under "What this repository is" and the Neovim test command.
+- The Vim and Neovim sections describe the same config; when changing a statement in one, check the other.
 
 ## What this repository is
 
-Personal Linux dotfiles (zsh, vim, shell utilities). It is a standalone repository — it is NOT related to the parent directory it may be checked out inside of. There is no build, lint, or test system; changes are verified by sourcing the file or opening vim:
+Personal Linux dotfiles (zsh, vim/neovim, shell utilities, Claude Code config, fresh-machine setup). It is a standalone repository — it is NOT related to the parent directory it may be checked out inside of. There is no build, lint, or test system; changes are verified by sourcing the file or opening vim:
 
 - Shell changes: `zsh -ic 'source shell/.shell-utils/<file>.sh && <function>'` or source the file in an interactive shell.
 - Vim changes: `vim -u vim/.vimrc` (vim-plug and plugins auto-install on first launch).
@@ -21,7 +20,7 @@ Commit messages follow the pattern `<area>: <description>`, e.g. `vim: adjust ma
 
 ## Layout: stow-style packages mirroring $HOME
 
-Each top-level directory is a "package" whose contents map directly onto `$HOME` (the repo is deployed to `~/.dotfiles` and its files linked/copied into place):
+Each top-level directory other than `setup/` and `.claude/` is a "package" whose contents map directly onto `$HOME` (each is linked into `$HOME`, e.g. with `stow -t ~ <package>`; `~/.dotfiles` itself is a link to the checkout, created by `setup/`):
 
 - `zsh/.zshenv`, `zsh/.zshrc` → `~/.zshenv`, `~/.zshrc`
 - `vim/.vimrc` → `~/.vimrc`
@@ -30,7 +29,7 @@ Each top-level directory is a "package" whose contents map directly onto `$HOME`
 - `shell/.scripts/` → `~/.scripts/` (standalone executables, added to `PATH` by `.zshrc`)
 - `claude/.claude/` → `~/.claude/` (global Claude Code instructions, user settings and the instruction-doc hook), deployed with `stow -t ~ claude` from the repo root. `~/.claude/` must already exist as a real directory before stowing — otherwise stow folds it into a single link to the repo, and the sessions, credentials and other runtime state Claude Code keeps there land in the repo. `~/.claude/hooks/` does get folded into a directory link, so a new hook created there is created in the repo.
 
-`bash/` and `system-setup/` exist as empty placeholder directories with no tracked files.
+`setup/` is **not** a package — it is a bash installer for a fresh machine (entry point `run-setup.sh`), always run from a full checkout of this repo. Its scripts locate each other and `shell/.shell-utils/functions-sed.sh` relative to their own file (`${BASH_SOURCE[0]}`), never the current directory; keep it that way when adding scripts.
 
 Because files are edited at their deployed paths in day-to-day use, paths inside the configs refer to `~/.shell-utils`, `~/.scripts`, `~/.dotfiles`, etc. — not to repo-relative paths.
 
@@ -38,11 +37,11 @@ Because files are edited at their deployed paths in day-to-day use, paths inside
 
 - `zsh/.zshenv` sources **every file** in `~/.shell-utils/*` (top level only), so all aliases and functions are available in both interactive and non-interactive shells. Any new `shell/.shell-utils/*.sh` file is picked up automatically; files must be safe to source in any shell.
 - `zsh/.zshrc` holds interactive-only config: history, Alt/Meta-key bindings (deliberately mirroring the vim meta mappings), completion styles, fzf integration (`_fzf_complete_*` and `_fzf_comprun` extensions), and the powerline prompt.
-- `DISTRO` is set (currently hardcoded to `Tuxedo`) in `.zshrc` and consumed by `case $DISTRO` switches in `functions.sh` and `functions-setup.sh` to pick `apt` vs `dnf`. Fedora branches are mostly `TODO`. New package-related functions should follow this pattern.
+- `DISTRO` is set in `.zshrc` and consumed by `case $DISTRO` switches in `functions.sh` and `functions-setup.sh` to pick `apt` vs `dnf`. New package-related functions should follow this pattern, with a branch per supported distro.
 - `shell/.shell-utils/basic/` contains **reduced duplicates** of `aliases.sh` and `functions-git.sh` for minimal environments (e.g. containers, plain bash). When editing an alias or git function, check whether the same entry exists in `basic/` and update both.
 - Functions build on each other across files: e.g. `functions-workarounds.sh` calls `replace-substring-file`/`append-line-after` from `functions-sed.sh`, and `functions-setup.sh` uses `mkcd` from `functions.sh`. `.zshenv` sources files in glob order, but functions are only resolved at call time, so cross-file references are fine.
 - `shell/.scripts/*.sh` are self-contained executables invoked by name (they are on `PATH`); some aliases in `aliases.sh` wrap them (e.g. `git-dag-current` → `git-dag-list.sh`).
-- `.zshrc` ends with an `# AUTOGENERATED PART STARTS HERE` marker; content below it is machine-appended — keep manual edits above the marker.
+- `.zshrc` ends with an `# AUTOGENERATED (ADDED BY OTHER SCRIPTS) PART STARTS HERE` marker; content below it is machine-appended — keep manual edits above the marker.
 
 ## Vim config conventions
 
@@ -56,10 +55,10 @@ Because files are edited at their deployed paths in day-to-day use, paths inside
 
 A **faithful, behavior-identical port** of `vim/.vimrc` to modular Lua — same plugins (vim-plug, vim-lsp/ALE/asyncomplete, fzf.vim, NERDTree), same mappings, same workarounds. When changing one config, mirror the change in the other. Requires **Neovim 0.7+** (`vim.keymap.set` etc.); `init.lua` version-guards and skips loading with a message on older builds.
 
-- `init.lua` requires `lua/config/*` modules in the same order as the `.vimrc` sections; each module's header comment cites the `.vimrc` line range it ports. Module split: `options`, `mappings`, `terminal`, `plugins`, `lsp`, `fzf`, `files` (the `.vimrc`'s "Manage files" plugin group: NERDTree/ranger/renamer), `misc`, `autocmds`.
+- `init.lua` requires `lua/config/*` modules in the same order as the `.vimrc` sections; each module's header comment cites the `.vimrc` line range it ports. `files.lua` is the `.vimrc`'s "Manage files" plugin group (NERDTree/ranger/renamer).
 - Port conventions: `noremap` → `map('', ...)`; recursive `map`/`nmap` → `{ remap = true }` (often load-bearing — rhs goes through vim-wordmotion/sneak/commentary maps); vimscript `<expr>` logic → Lua functions; rhs strings containing backslashes use `[[...]]` (Lua escaping).
 - Funcref/dict-heavy vimscript (asyncomplete workarounds, NERDTree sync logic, `g:fzf_action`) is kept **verbatim** in `vim.cmd([[...]])` blocks — intentionally not translated.
-- `terminal.lua` is the one deliberately divergent module: it emulates Vim 8 terminal behavior Neovim lacks (auto Terminal-Job mode via `TermOpen`/`WinEnter` autocmds, the CTRL-W termwinkey prefix via t-mode maps, `:shell` → `:terminal`). Its header comment lists the four Vim/Neovim differences it compensates for.
+- `terminal.lua` is the one deliberately divergent module; its header comment lists the four Vim/Neovim differences it compensates for.
 - Dropped as unnecessary in Neovim (documented in place): Alt-key terminal keycode loops, `t_Co`/`ttymouse`, vim-wayland-clipboard; added: `bclose.vim` (required by ranger.vim under Neovim).
 - `:ReloadConfig` (defined in `init.lua`) is the `:source $MYVIMRC` equivalent — it clears the `config.*` Lua module cache first; `<leader>cr` uses it. vim-plug bootstraps synchronously on first start (plug.vim must be sourced explicitly after download because Neovim caches runtime-file lookups at startup).
 - Test after changes: `XDG_CONFIG_HOME=$PWD/nvim/.config XDG_DATA_HOME=/tmp/nvim-test/data nvim --headless "+qall"` loads the config (and on first run installs all plugins) without touching the deployed setup.

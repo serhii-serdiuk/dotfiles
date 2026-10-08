@@ -9,7 +9,7 @@ replace-substring-file() {
     local first=$1
     local second=$2
     local file=$3
-    sed -Ei "s/$first/$second/g" $file
+    sed -Ei "s/$first/$second/g" "$file"
 }
 
 delete-line() {
@@ -21,31 +21,31 @@ delete-line() {
 delete-lines-file() {
     local substring=$1
     local file=$2
-    sed -Ei "/$substring/d" $file
+    sed -Ei "/$substring/d" "$file"
 }
 
 append-line-after() {
     local match=$1
     local line=$2
     local file=$3
-    sed -Ei "/$match/a $line" $file
+    sed -Ei "/$match/a $line" "$file"
 }
 
 insert-line-before() {
     local match=$1
     local line=$2
     local file=$3
-    sed -Ei "/$match/i $line" $file
+    sed -Ei "/$match/i $line" "$file"
 }
 
 comment-script-line() {
     local substring=$1
     local file=$2
-    sed -Ei "/$substring/s/^/#/g" $file
+    sed -Ei "/$substring/s/^/#/g" "$file"
 }
 
 uncomment-script-line() {
     local substring=$1
     local file=$2
-    sed -Ei "/$substring/s/^#//g" $file
+    sed -Ei "/$substring/s/^#//g" "$file"
 }
