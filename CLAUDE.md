@@ -20,14 +20,16 @@ Commit messages follow the pattern `<area>: <description>`, e.g. `vim: adjust ma
 
 ## Layout: stow-style packages mirroring $HOME
 
-Each top-level directory other than `setup/`, `.claude/` and `.githooks/` is a "package" whose contents map directly onto `$HOME` (each is linked into `$HOME`, e.g. with `stow -t ~ <package>`; `~/.dotfiles` itself is a link to the checkout, created by `setup/`):
+Each top-level directory other than `setup/`, `.claude/` and `.githooks/` is a "package" whose contents map directly onto `$HOME` (`~/.dotfiles` itself is a link to the checkout, created by `setup/`). `stow_dotfiles` in `setup/aux/restore-configs.sh` links them with stow; add a new package to its `packages` list:
 
 - `zsh/.zshenv`, `zsh/.zshrc` → `~/.zshenv`, `~/.zshrc`
 - `vim/.vimrc` → `~/.vimrc`
 - `nvim/.config/nvim/` → `~/.config/nvim/` (Lua port of the vim config, see below)
 - `shell/.shell-utils/` → `~/.shell-utils/` (sourced libraries)
 - `shell/.scripts/` → `~/.scripts/` (standalone executables, added to `PATH` by `.zshrc`)
-- `claude/.claude/` → `~/.claude/` (global Claude Code instructions, user settings and the instruction-doc hook), deployed with `stow -t ~ claude` from the repo root. `~/.claude/` must already exist as a real directory before stowing — otherwise stow folds it into a single link to the repo, and the sessions, credentials and other runtime state Claude Code keeps there land in the repo. `~/.claude/hooks/` does get folded into a directory link, so a new hook created there is created in the repo.
+- `claude/.claude/` → `~/.claude/` (global Claude Code instructions, user settings and the instruction-doc hook). `~/.claude/hooks/` is linked as a whole directory, so a new hook created there is created in the repo.
+
+When a package puts files into a directory where programs also keep their own files, add that directory to the `mkdir -p` line in `stow_dotfiles` (its comment says why).
 
 `setup/` is **not** a package — it is a bash installer for a fresh machine (entry point `run-setup.sh`), always run from a full checkout of this repo. Its scripts locate each other and `shell/.shell-utils/functions-sed.sh` relative to their own file (`${BASH_SOURCE[0]}`), never the current directory; keep it that way when adding scripts.
 

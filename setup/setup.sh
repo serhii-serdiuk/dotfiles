@@ -80,7 +80,8 @@ change_default_theme_start_icon() {
 set_common_packages() {
     # Common packages
     # pkg_list=( powerline htop hstr vim neovim tmux yt-dlp
-    pkg_list=( powerline htop
+    pkg_list=( stow
+               powerline htop
                bat ripgrep highlight
                vim vim-gtk3 wl-clipboard neovim tmux
                zathura mpv mpv-mpris yt-dlp

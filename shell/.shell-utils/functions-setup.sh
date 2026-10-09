@@ -13,6 +13,23 @@ _log() {
     echo -e "${green}INFO: `date` - $*${no_color}"
 }
 
+# Move files or directories from $HOME into a dotfiles package and link them back with stow
+dotfiles-adopt() {
+    local package=$1; shift
+    local dotfiles=$(realpath ~/.dotfiles)
+    local file rel
+    for file in "$@"; do
+        rel=$(realpath -s --relative-to="$HOME" "$file")
+        if [[ $rel == ../* ]]; then
+            echo "Not under \$HOME: $file"
+            return 1
+        fi
+        mkdir -p "$dotfiles/$package/$(dirname "$rel")"
+        mv "$HOME/$rel" "$dotfiles/$package/$rel" || return 1
+    done
+    stow -d "$dotfiles" -t "$HOME" -v 1 "$package"
+}
+
 _backup_firefox() {
     _log "Backup Firefox setup"
 
