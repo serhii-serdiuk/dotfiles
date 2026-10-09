@@ -1,0 +1,239 @@
+---
+# This is the configuration file for konsave.
+# This file is pre-configured for KDE Plasma users.
+# This will backup all the important files for your Plasma customizations.
+# Please make sure it follows the correct format for proper working of Konsave.
+# The format should be:
+# ---
+# save:
+#     name:
+#         location: "path/to/parent/directory"
+#         entries:
+#         # these are files which will be backed up.
+#         # They should be present in the specified location.
+#             - file1
+#             - file2
+# export:
+#     # This includes files which will be exported with your profile.
+#     # They will not be saved but only be exported and imported.
+#     # These may include files like complete icon packs and themes..
+#     name:
+#         location: "path/to/parent/directory"
+#         entries:
+#             - file1
+#             - file2
+# ...
+# You can use these placeholders in the "location" of each item:
+# $HOME: the home directory
+# $CONFIG_DIR: refers to "$HOME/.config/"
+# $SHARE_DIR: refers to "$HOME/.local/share"
+# $BIN_DIR: refers to "$HOME/.local/bin"
+# ${ENDS_WITH="text"}: for folders with different names on different computers whose names end with the same thing.
+# The best example for this is the "*.default-release" folder of firefox.
+# ${BEGINS_WITH="text"}: for folders with different names on different computers whose names start with the same thing.
+
+save:
+    home:
+        location: "$HOME"
+        entries:
+            - .flatpak-host
+            - .scripts-work
+            - .shell-utils-work
+            - .bash_history
+            - .bash_profile
+            - .bashrc
+            - .gitconfig
+            - .inputrc
+            - .qqX
+            - .zsh_history
+
+    ssh:
+        location: "$HOME/.ssh"
+        entries:
+            - authorized_keys
+            - config
+            - id_rsa
+            - id_rsa.pub
+
+    config:
+        location: "$CONFIG_DIR"
+        entries:
+            # directories
+            - autostart
+            - clangd
+            - git
+            - git-cola
+            - kate
+            - powerline
+            # files
+            - baloofilerc
+            - discoverrc
+            - dolphinrc
+            - katerc
+            - katevirc
+            - kcminputrc  # NOTE: device dependent
+            - kdeglobals
+            - kdesrc-buildrc  # NOTE: not sure if this still relevant
+            - kglobalshortcutsrc
+            - krunnerrc
+            - kwinrc
+            - kwinrulesrc
+            - kwriterc
+            - kxkbrc
+            - mimeapps.list
+            - plasma-org.kde.plasma.desktop-appletsrc
+            - plasmashellrc
+            - plasmavaultrc
+            - powermanagementprofilesrc
+            - pycodestyle
+            - spectaclerc
+            - yakuakerc
+
+    config_cursor:
+        location: "$CONFIG_DIR/Cursor/User"
+        entries:
+            - settings.json
+            - keybindings.json
+
+    config_mpv:
+        location: "$CONFIG_DIR/mpv"
+        entries:
+            - mpv.conf
+
+    # TODO: should be moved to respective Flatpak dir
+    config_qbittorrent:
+        location: "$CONFIG_DIR/qBittorrent"
+        entries:
+            - qBittorrent.conf
+
+    share:
+        location: "$SHARE_DIR"
+        entries:
+            - cryfs
+            - ranger
+
+    share_vimlsp:
+        location: "$SHARE_DIR/vim-lsp-settings"
+        entries:
+            - settings.json
+
+    share_flatpak:
+        location: "$SHARE_DIR/flatpak"
+        entries:
+            - overrides
+
+    share_kate:
+        location: "$SHARE_DIR/kate"
+        entries:
+            - sessions
+            - anonymous.katesession
+
+    share_konsole:
+        location: "$SHARE_DIR/konsole"
+        entries:
+            - Dracula.colorscheme
+            - Profile 1 (bash).profile
+            - Profile 2 (zsh).profile
+
+    share_kxmlgui:
+        location: "$SHARE_DIR/kxmlgui5"
+        entries:
+            - dolphin
+            - konsole
+            - kwrite
+            - kate
+            - katepart
+            - katesearch
+            - kateproject
+            - katekonsole
+            - katebuild
+            - katefiletree
+            - lspclient
+            - textfilter
+            - externaltools
+
+    share_applications:
+        location: "$SHARE_DIR/applications"
+        entries:
+            - firefox-deepl-translator.desktop
+            - firefox-deepl-write.desktop
+            - firefox-new-tab.desktop
+            - firefox-perplexity.desktop
+            - firefox-todoist.desktop
+            - firefox-youtube.desktop
+            - planify-add-task.desktop
+            - restart-plasma.desktop
+            - restart-kwin.desktop
+            - restart-shortcuts-daemon.desktop
+            - restart-remoteclient.desktop
+            - qemu-run-iso.desktop
+            - qqx-virt-manager.desktop
+            - qqx.desktop
+            - vim.desktop
+
+    flatpak_vscode:
+        location: "$HOME/.var/app/com.visualstudio.code/config/Code/User"
+        entries:
+            - settings.json
+            - keybindings.json
+
+    flatpak_todoist:
+        location: "$HOME/.var/app/com.todoist.Todoist/config/Todoist"
+        entries:
+            - settings.json
+
+    flatpak_zed:
+        location: "$HOME/.var/app/dev.zed.Zed/config/zed"
+        entries:
+            - settings.json
+
+    flatpak_newsflash:
+        location: "$HOME/.var/app/io.gitlab.news_flash.NewsFlash/config"
+        entries:
+            - news-flash
+
+    flatpak_qtcreator:
+        location: "$HOME/.var/app/io.qt.QtCreator/config/QtProject"
+        entries:
+            - qtcreator
+            - QtCreator.ini
+
+    flatpak_dltviewer:
+        location: "$HOME/.var/app/org.genivi.DLTViewer"
+        entries:
+            - .dlt
+
+    flatpak_keepassxc:
+        location: "$HOME/.var/app/org.keepassxc.KeePassXC/config/"
+        entries:
+            - keepassxc
+
+    # Here are a few examples of how you can add more stuff to back up.
+    # Uncomment these lines if you want.
+    # firefox:
+    #     location: "$HOME/.mozilla/firefox/${ENDS_WITH='.default-release'}"
+    #     entries:
+    #         - chrome # for firefox customizations
+
+    # code oss:
+    #     location: "$CONFIG_DIR/Code - OSS/User/"
+    #     entries:
+    #         - settings.json
+
+
+# The following files will only be used for exporting and importing.
+export:
+    share_plasma:
+        location: "$SHARE_DIR/plasma"
+        entries:
+            - plasmoids
+
+    # You can add more files to export like this
+    # name:
+    #     location: "path/to/parent/directory"
+    #     entries:
+    #         - file1
+    #         - file2
+    #         - folder1
+    #         - folder2
+...

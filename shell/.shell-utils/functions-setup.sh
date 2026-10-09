@@ -65,8 +65,10 @@ backup-configs() {
     konsave -s $konsave_profile
     konsave -e $konsave_profile
 
-    mv $backup_dir/$konsave_profile.knsv $backup_dir/$konsave_profile.knsv.old
-    mv $HOME/$konsave_profile.knsv $backup_dir/
+    if [ -f $backup_dir/$konsave_profile.knsv ]; then
+        mv $backup_dir/$konsave_profile.knsv $backup_dir/$konsave_profile.knsv.old
+    fi
+    mv $konsave_profile.knsv $backup_dir/
 
     # _log "Backup global configs"
     # local global_configs_backup_dir=$HOME/.backup/global-configs

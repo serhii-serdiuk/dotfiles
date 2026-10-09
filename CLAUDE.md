@@ -28,6 +28,7 @@ Each top-level directory other than `setup/`, `.claude/` and `.githooks/` is a "
 - `shell/.shell-utils/` → `~/.shell-utils/` (sourced libraries)
 - `shell/.scripts/` → `~/.scripts/` (standalone executables, added to `PATH` by `.zshrc`)
 - `claude/.claude/` → `~/.claude/` (global Claude Code instructions, user settings and the instruction-doc hook). `~/.claude/hooks/` is linked as a whole directory, so a new hook created there is created in the repo.
+- `konsave/.config/konsave/conf.yaml` → `~/.config/konsave/conf.yaml`. When moving a file to a stow package, remove it from `conf.yaml`: setup applies the konsave profile after stowing, on top of the stowed links.
 
 When a package puts files into a directory where programs also keep their own files, add that directory to the `mkdir -p` line in `stow_dotfiles` (its comment says why).
 

@@ -158,11 +158,11 @@ _replace_system_dir_by_link() {
 stow_dotfiles() {
     log "Link dotfiles packages into home dir with stow"
     dotfiles_dir=$(realpath "$SETUP_DIR/..")
-    packages=( claude nvim shell vim zsh )
+    packages=( claude konsave nvim shell vim zsh )
 
     # Must be real directories, otherwise stow replaces them by a single link into the repo
     # and files that other programs keep there land in the repo
-    mkdir -p "$HOME/.config" "$HOME/.claude"
+    mkdir -p "$HOME/.config" "$HOME/.config/konsave" "$HOME/.claude"
 
     # stow refuses to replace existing files, so keep them as .bak
     for package in ${packages[@]}; do
@@ -198,9 +198,6 @@ restore_configs() {
 
     log "Apply konsave profile"
     konsave -a $konsave_profile
-
-    mv $konsave_dir/conf.yaml $konsave_dir/conf.yaml.bak
-    cp $konsave_dir/profiles/$konsave_profile/conf.yaml $konsave_dir/
 
     wifi_interface=$(iw dev | grep wlp | cut -d " " -f 2)
     replace-substring-file "wlp[^\/]*" "$wifi_interface" $HOME/.local/share/plasma-systemmonitor/overview.page
