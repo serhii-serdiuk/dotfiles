@@ -34,13 +34,14 @@ section adds its specifics: how to verify, where facts live, which statements ha
   latch, poll, propagate, collapse, plumb, hook, fan out, short-circuit*), unless the word is
   the actual technical name (a git hook, polling an API).
 
-# Git staging
+# Git staging and commits
 
 **Never `git add` or `git commit` on your own initiative.** Stage only when I ask
-for it in that message. An earlier "stage these changes" is *not* standing
-authorisation: if I ask you to stage, and you then edit those files again, stop
-and tell me — do not re-stage. Same when your own work leaves the index stale
-(a rename, a deleted file): report it and give me the command, don't run it.
+for it in that message, or when a skill used for my request says to. An earlier
+"stage these changes" is *not* standing authorisation: if I ask you to stage,
+and you then edit those files again, stop and tell me — do not re-stage. Same
+when your own work leaves the index stale (a rename, a deleted file): report it
+and give me the command, don't run it.
 
 **When I do ask you to stage, stage only the hunks you changed in this session.**
 My working tree usually carries my own in-flight work, often in the very files
@@ -51,9 +52,13 @@ changes at once. So check `git diff` per file before staging:
 - The file also contains my changes → stage a blob of `git show HEAD:<path>`
   plus only your lines (`git add -p` is interactive and unavailable):
 
-      git hash-object -w --path <path> --stdin        # prints <sha>
-      git update-index --cacheinfo 100644,<sha>,<path>
+      git show HEAD:<path> | <apply only your change> | git hash-object -w --path <path> --stdin   # prints <sha>
+      git update-index --cacheinfo <mode>,<sha>,<path>   # <mode> from: git ls-files -s <path>
 
 Afterwards, confirm with `git diff --cached` that none of my identifiers leaked
 in, and tell me the index now holds a partial version of those files — a
 `git stash` or a checkout of the index would drop my lines.
+
+**Commit messages carry no attribution.** Whenever you are allowed to commit,
+whether I asked in that message or a skill permits it, leave out the
+`Co-Authored-By` line and any other trailer naming Claude.
