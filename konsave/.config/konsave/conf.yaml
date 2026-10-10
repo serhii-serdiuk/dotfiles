@@ -40,7 +40,6 @@ save:
             - .scripts-work
             - .shell-utils-work
             - .bash_history
-            - .gitconfig
             - .qqX
             - .zsh_history
 
