@@ -1,0 +1,19 @@
+# alternate mappings for "alt+k" and "alt+j" to search the history
+"\ek": history-search-backward
+"\ej": history-search-forward
+# "\ep": history-search-backward
+# "\en": history-search-forward
+
+"\eK": reverse-search-history
+
+"\eh": backward-word
+"\el": forward-word
+"\eb": backward-char
+"\ef": forward-char
+
+"\ew": backward-kill-word
+"\ep": yank
+"\eu": undo
+"\em": accept-line
+
+"\ee": edit-and-execute-command

@@ -71,8 +71,8 @@ _restore_global_config_by_append() {
 _restore_global_configs() {
     log "Restore global configs"
 
-    sudo mkdir -p /root/.bashrc.d
-    sudo ln -sf ~/.bashrc.d/aliases.sh /root/.bashrc.d/
+    # sudo mkdir -p /root/.bashrc.d
+    # sudo ln -sf ~/.bashrc.d/aliases.sh /root/.bashrc.d/
     # sudo ln -sf ~/.bashrc.d/functions.sh /root/.bashrc.d/
 
     sudo mkdir -p /root/.config
@@ -158,7 +158,7 @@ _replace_system_dir_by_link() {
 stow_dotfiles() {
     log "Link dotfiles packages into home dir with stow"
     dotfiles_dir=$(realpath "$SETUP_DIR/..")
-    packages=( claude konsave nvim shell vim zsh )
+    packages=( bash claude konsave nvim shell vim zsh )
 
     # Must be real directories, otherwise stow replaces them by a single link into the repo
     # and files that other programs keep there land in the repo
