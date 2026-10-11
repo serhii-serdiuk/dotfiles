@@ -86,11 +86,6 @@ save:
             - settings.json
             - keybindings.json
 
-    config_mpv:
-        location: "$CONFIG_DIR/mpv"
-        entries:
-            - mpv.conf
-
     # TODO: should be moved to respective Flatpak dir
     config_qbittorrent:
         location: "$CONFIG_DIR/qBittorrent"
