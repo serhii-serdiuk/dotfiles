@@ -56,7 +56,6 @@ save:
         entries:
             # directories
             - kate
-            - powerline
             # files
             - baloofilerc
             - discoverrc
