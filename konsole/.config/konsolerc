@@ -1,0 +1,60 @@
+[Desktop Entry]
+DefaultProfile=Profile 2 (zsh).profile
+
+[FileDialogSize]
+2 screens: Height=715
+2 screens: Width=1184
+
+[General]
+ConfigVersion=1
+
+[KFileDialog Settings]
+detailViewIconSize=16
+
+[KonsoleWindow]
+FocusFollowsMouse=true
+RememberWindowSize=true
+
+[MainWindow]
+1440x810 screen: Height=738
+1440x810 screen: Width=1204
+1600x900 screen: Height=739
+1600x900 screen: Width=1206
+1600x900 screen: Window-Maximized=true
+1646x926 screen: Height=743
+1646x926 screen: Width=1251
+1694x953 screen: Height=580
+1694x953 screen: Width=1022
+1920x1080 screen: Height=580
+1920x1080 screen: Width=1022
+1920x1080 screen: Window-Maximized=true
+2 screens: Height=738
+2 screens: Width=1204
+2 screens: XPosition=3065
+2 screens: YPosition=257
+2327x1309 screen: Window-Maximized=true
+2560x1440 screen: Height=743
+2560x1440 screen: Width=1251
+2880x1620 screen: Height=580
+2880x1620 screen: Width=1022
+DisplayPort-6 eDP=DisplayPort-6
+DisplayPort-7 eDP=DisplayPort-7
+State=AAAA/wAAAAD9AAAAAQAAAAAAAAEQAAADTvwCAAAAAvsAAAAiAFEAdQBpAGMAawBDAG8AbQBtAGEAbgBkAHMARABvAGMAawAAAAAuAAADTgAAAXwBAAAD+wAAABwAUwBTAEgATQBhAG4AYQBnAGUAcgBEAG8AYwBrAAAAAC4AAANOAAABFQEAAAMAAAkXAAAE/QAAAAQAAAAEAAAACAAAAAj8AAAAAQAAAAIAAAACAAAAFgBtAGEAaQBuAFQAbwBvAGwAQgBhAHIAAAAAAP////8AAAAAAAAAAAAAABwAcwBlAHMAcwBpAG8AbgBUAG8AbwBsAGIAYQByAAAAAAD/////AAAAAAAAAAA=
+ToolBarsMovable=Disabled
+
+[Notification Messages]
+CloseAllEmptyTabs=true
+CloseAllTabs=true
+CloseSingleTab=true
+
+[SearchSettings]
+SearchRegExpression=true
+
+[SplitView]
+SplitViewVisibility=AlwaysHideSplitHeader
+
+[TabBar]
+CloseTabOnMiddleMouseButton=true
+
+[UiSettings]
+ColorScheme=

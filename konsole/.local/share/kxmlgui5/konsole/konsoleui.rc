@@ -1,0 +1,103 @@
+<?xml version='1.0'?>
+<!DOCTYPE gui SYSTEM 'kpartgui.dtd'>
+<gui version="20" name="konsole">
+ <MenuBar>
+  <Menu name="file">
+   <text>File</text>
+   <Action name="new-window"/>
+   <Action name="new-tab"/>
+   <Action name="clone-tab"/>
+   <Separator/>
+   <DefineGroup name="session-operations"/>
+   <Separator/>
+   <DefineGroup name="session-tab-operations"/>
+   <Action name="close-window"/>
+  </Menu>
+  <Menu name="edit">
+   <text>Edit</text>
+   <DefineGroup name="session-edit-operations"/>
+  </Menu>
+  <Menu name="view">
+   <text>View</text>
+   <Menu name="view-split">
+    <text>Split View</text>
+    <Action name="split-view-left-right"/>
+    <Action name="split-view-top-bottom"/>
+    <Action name="split-view-left-right-next-tab"/>
+    <Action name="split-view-top-bottom-next-tab"/>
+    <Action name="close-active-view"/>
+    <Action name="close-other-views"/>
+    <Action name="expand-active-view"/>
+    <Action name="shrink-active-view"/>
+    <Action name="toggle-maximize-current-view"/>
+    <Action name="equal-size-view"/>
+   </Menu>
+   <Separator/>
+   <Action name="detach-tab"/>
+   <Action name="detach-view"/>
+   <Action name="save-layout"/>
+   <Action name="load-layout"/>
+   <Separator/>
+   <DefineGroup name="session-view-operations"/>
+  </Menu>
+  <Action name="bookmark"/>
+  <Menu name="settings">
+   <text>Settings</text>
+   <DefineGroup name="session-settings"/>
+   <Action name="manage-profiles"/>
+   <Action name="show-menubar"/>
+   <Action name="window-colorscheme-menu"/>
+   <Separator/>
+   <Action name="view-full-screen"/>
+   <Separator/>
+   <Action name="configure-shortcuts"/>
+   <Action name="configure-notifications"/>
+   <Action name="configure-settings"/>
+  </Menu>
+  <Menu name="plugins">
+   <text>Plugins</text>
+   <ActionList name="plugin-submenu"/>
+  </Menu>
+  <Menu name="help">
+   <text>Help</text>
+  </Menu>
+ </MenuBar>
+ <ToolBar name="mainToolBar">
+  <text>Main Toolbar</text>
+  <index>0</index>
+  <Action name="new-tab"/>
+  <Action name="split-view-left-right"/>
+  <Action name="split-view-top-bottom"/>
+ </ToolBar>
+ <ActionProperties>
+  <Action shortcut="" name="clone-tab"/>
+  <Action shortcut="" name="help_contents"/>
+  <Action shortcut="Alt+Shift+Left; Alt+&lt;" name="move-tab-to-left"/>
+  <Action shortcut="Alt+Shift+Right; Alt+>" name="move-tab-to-right"/>
+  <Action shortcut="Alt+Right; Alt+Shift+L" name="next-tab"/>
+  <Action shortcut="Alt+Left; Alt+Shift+H" name="previous-tab"/>
+  <Action shortcut="Ctrl+(; Ctrl+\" name="split-view-left-right"/>
+  <Action priority="128" shortcut="Ctrl+); Alt+\" name="split-view-top-bottom"/>
+  <Action shortcut="Alt+=" name="equal-size-view"/>
+  <Action shortcut="" name="toggle-line-numbers"/>
+  <Action shortcut="Ctrl+Alt+I; Alt+:" name="open_kcommand_bar"/>
+  <Action shortcut="Ctrl+|" name="split-view-left-right-next-tab"/>
+  <Action shortcut="Alt+|" name="split-view-top-bottom-next-tab"/>
+  <Action shortcut="Ctrl+Alt+D" name="detach-tab"/>
+  <Action shortcut="Ctrl+Shift+D" name="detach-view"/>
+  <Action shortcut="Ctrl+;; Alt+;" name="last-used-tab"/>
+  <Action shortcut="Ctrl+Shift+Tab; Alt+'" name="last-used-tab-reverse"/>
+  <Action shortcut="Ctrl+Shift+Up; Ctrl+Shift+K" name="focus-view-above"/>
+  <Action shortcut="Ctrl+Shift+Down; Ctrl+Shift+J" name="focus-view-below"/>
+  <Action shortcut="Ctrl+Shift+Left; Ctrl+Shift+H" name="focus-view-left"/>
+  <Action shortcut="Ctrl+Shift+Right; Ctrl+Shift+L" name="focus-view-right"/>
+  <Action shortcut="Ctrl+Shift+G" name="load-terminals-layout-2x2"/>
+  <Action shortcut="Ctrl+Shift+E; Alt+Shift+M" name="toggle-maximize-current-view"/>
+  <Action shortcut="Ctrl+Shift+]; Alt++" name="expand-active-view"/>
+  <Action shortcut="Ctrl+Shift+[; Alt+-" name="shrink-active-view"/>
+  <Action shortcut="Alt+9" name="last-tab"/>
+  <Action shortcut="Alt+1; Alt+0" name="switch-to-tab-0"/>
+  <Action shortcut="" name="switch-to-tab-8"/>
+  <Action shortcut="" name="switch-to-tab-9"/>
+ </ActionProperties>
+</gui>

@@ -65,6 +65,7 @@ save:
             - kdeglobals
             - kdesrc-buildrc  # NOTE: not sure if this still relevant
             - kglobalshortcutsrc
+            - konsolesshconfig
             - krunnerrc
             - kwinrc
             - kwinrulesrc
@@ -107,17 +108,9 @@ save:
             - sessions
             - anonymous.katesession
 
-    share_konsole:
-        location: "$SHARE_DIR/konsole"
-        entries:
-            - Dracula.colorscheme
-            - Profile 1 (bash).profile
-            - Profile 2 (zsh).profile
-
     share_kxmlgui:
         location: "$SHARE_DIR/kxmlgui5"
         entries:
-            - konsole
             - kwrite
             - kate
             - katepart
