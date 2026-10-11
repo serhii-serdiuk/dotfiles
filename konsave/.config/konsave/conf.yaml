@@ -55,7 +55,6 @@ save:
         location: "$CONFIG_DIR"
         entries:
             # directories
-            - git
             - git-cola
             - kate
             - powerline
