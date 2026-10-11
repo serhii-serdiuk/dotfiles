@@ -162,7 +162,8 @@ stow_dotfiles() {
 
     # Must be real directories, otherwise stow replaces them by a single link into the repo
     # and files that other programs keep there land in the repo
-    mkdir -p "$HOME/.config" "$HOME/.config/autostart" "$HOME/.config/konsave" "$HOME/.config/mpv" "$HOME/.claude"
+    mkdir -p "$HOME/.config" "$HOME/.config/autostart" "$HOME/.config/konsave" "$HOME/.config/mpv" "$HOME/.claude" \
+        "$HOME/.local/share/vim-lsp-settings"
 
     # stow refuses to replace existing files, so keep them as .bak
     for package in ${packages[@]}; do

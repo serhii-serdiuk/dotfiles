@@ -97,11 +97,6 @@ save:
             - cryfs
             - ranger
 
-    share_vimlsp:
-        location: "$SHARE_DIR/vim-lsp-settings"
-        entries:
-            - settings.json
-
     share_flatpak:
         location: "$SHARE_DIR/flatpak"
         entries:

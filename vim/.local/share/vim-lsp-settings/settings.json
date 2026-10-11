@@ -1,0 +1,8 @@
+{
+    "qmlls": {
+        "cmd": [
+            "/data/home/Workspace/Frameworks/CraftRoot/bin/qmlls"
+        ],
+        "disabled": false
+    }
+}
