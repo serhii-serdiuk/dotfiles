@@ -14,7 +14,8 @@ Read every file before moving it.
 - **Secrets:** run `gitleaks detect --no-git --source <path>` on each file (newer gitleaks: `gitleaks dir <path>`). Keep keys, tokens and credential stores out of the repo, even when gitleaks finds nothing.
 - **Machine- or work-specific content:** absolute paths, hostnames, project variables. Ask the user whether they belong in this repo.
 - **Files, not directories, when the app also writes there** (history, caches, sessions, plugin downloads). Moving a whole directory means everything the app writes later lands in the repo. A whole directory is fine when it holds only hand-written config.
-- **Does the app keep the link?** Some apps save by writing a new file over the old one, which replaces the link with a regular file. KDE apps (`*rc` files in `~/.config`) are known for this. If unsure, have the user change a setting in the app after stowing and check with `ls -l` that the file is still a link. If not, leave the file in konsave.
+- **Does the app keep the link?** Some apps save by renaming a new file over the old one, which replaces a link to a single file with a regular file (gitk and git-cola do this). Linking the whole directory avoids it, if nothing else the app writes there should stay out of the repo. KDE apps keep links: KConfig saves through Qt's `QSaveFile`, which follows the link first. If unsure, have the user change a setting in the app after stowing and check with `ls -l` that the file is still a link.
+- **Machine-written files** (KDE `*rc` files, app state with window geometry or recent items) work, but every change in the app shows up as a diff. Tell the user before adopting them. KDE `*ui.rc` files in `~/.local/share/kxmlgui5` also change when the app updates: KDE merges the user's shortcuts and toolbars into the new built-in layout. Those diffs should be committed.
 - **Flatpak apps** see a link into the repo only if their sandbox can access that path: `flatpak info --show-permissions <app-id>`.
 
 ## 2. Move the files and link them back
@@ -28,7 +29,7 @@ If the files are not in this session's `$HOME` (for example the session runs in 
 In `stow_dotfiles` in `setup/aux/restore-configs.sh`:
 
 - Add a new package to the `packages=( ... )` list, keeping it sorted.
-- If the package puts files into a directory where programs also keep their own files and setup does not create that directory yet (for example `~/.config/<app>` when only some files are stowed), add it to the `mkdir -p` line.
+- On a fresh machine stow links the highest directory on the package path that does not exist yet: a package with `.local/share/kxmlgui5/dolphin/dolphinui.rc` would link all of `~/.local` if it is missing. For each parent directory of the adopted files, check whether other programs keep files there (for example `~/.local/share/kxmlgui5`, or `~/.config/<app>` when only some of its files are stowed), and add the deepest such directory to the `mkdir -p` line unless it is already there. The test script lists the result under "real directories".
 
 ## 4. Remove the files from konsave
 
