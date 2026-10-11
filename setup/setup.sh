@@ -332,6 +332,15 @@ enable_dotfiles_git_hooks() {
     git -C "$SETUP_DIR/.." config core.hooksPath .githooks
 }
 
+# Used by .gitattributes. The output must match git-cola's own format (json.dump, indent 4),
+# otherwise every commit of the file shows a full rewrite
+enable_dotfiles_git_filters() {
+    echo
+    log "Enable git filters of the dotfiles repo (git-cola settings without recent repositories)"
+    git -C "$SETUP_DIR/.." config filter.cola-settings.clean \
+        'python3 -c "import json, sys; d = json.load(sys.stdin); d[\"recent\"] = []; sys.stdout.write(json.dumps(d, indent=4))"'
+}
+
 install_python_packages() {
     echo
     log "Installing Python packages..."
@@ -396,6 +405,7 @@ set_package_manager
 install_updates
 install_packages
 enable_dotfiles_git_hooks
+enable_dotfiles_git_filters
 install_python_packages
 # if [ $DEVELOPMENT_INSTALL = yes ]; then
 #     install_nodejs_packages  # TODO: doesn't work on Fedora, maybe should be reconsider

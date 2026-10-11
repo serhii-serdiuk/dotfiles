@@ -1,3 +1,5 @@
 .vim/sessions
 
 git/.config/git/credentials
+git/.config/git-cola/settings.tmp
+git/.config/git-cola/settings.bak

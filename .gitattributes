@@ -1,0 +1,2 @@
+# Commit git-cola settings without the "recent" list (filter set by setup/setup.sh)
+git/.config/git-cola/settings filter=cola-settings

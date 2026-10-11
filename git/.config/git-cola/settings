@@ -1,0 +1,229 @@
+{
+    "bookmarks": [],
+    "gui_state": {
+        "mainview": {
+            "geometry": "AdnQywADAAAAAAWgAAAAAAAADrYAAAT8AAAAAAAAAIIAAAbQAAAFngAAAAECAAAACRcAAAWgAAAAAAAADrYAAAT8",
+            "width": 2327,
+            "height": 1277,
+            "x": 1440,
+            "y": 0,
+            "lock_layout": false,
+            "windowstate": "AAAA/wAAAAL9AAAAAgAAAAIAAAkXAAAE/fwBAAAAA/wAAAAAAAAG3QAAAJ4A/////AIAAAAC+wAAAAwAQwBvAG0AbQBpAHQBAAAAAAAAARkAAABgAQAAA/sAAAAIAEQAaQBmAGYBAAABHAAAA+EAAABxAQAAA/wAAAM5AAACuQAAAAAA////+v////8BAAAAAvsAAAASAEYAYQB2AG8AcgBpAHQAZQBzAAAAAAD/////AAAAsAEAAAP7AAAADABSAGUAYwBlAG4AdAAAAAAA/////wAAAI0BAAAD/AAABuAAAAI3AAAAwwD////8AgAAAAL7AAAADABTAHQAYQB0AHUAcwEAAAAAAAADRgAAAHEBAAAD/AAAA0kAAAG0AAAAjwEAAB36AAAAAAEAAAAC+wAAABAAQgByAGEAbgBjAGgAZQBzAQAABa4AAAHSAAAAnQEAAAP7AAAAFABTAHUAYgBtAG8AZAB1AGwAZQBzAQAAAAD/////AAAAwwEAAAMAAAADAAAHgAAAAQv8AQAAAAH8AAAAAP////8AAAAAAP////r/////AQAAAAL7AAAADgBBAGMAdABpAG8AbgBzAAAAAAD/////AAAAZwEAAAP7AAAADgBDAG8AbgBzAG8AbABlAAAAAAD/////AAAAaQEAAAMAAAkXAAAAAAAAAAQAAAAEAAAACAAAAAj8AAAAAQAAAAIAAAAA",
+            "show_status_filter": false,
+            "toolbars": [],
+            "ref_sort": 1,
+            "show_diff_line_numbers": true,
+            "image_diff_mode": 0,
+            "image_zoom_mode": 0,
+            "word_wrap": true
+        },
+        "gitdag": {
+            "geometry": "AdnQywADAAAAAAWgAAAAAAAADrYAAAT8AAAFoAAAAIIAAAhZAAACRgAAAAECAAAACRcAAAWgAAAAAAAADrYAAAT8",
+            "width": 2327,
+            "height": 1277,
+            "x": 1440,
+            "y": 0,
+            "lock_layout": false,
+            "windowstate": "AAAA/wAAAAL9AAAAAgAAAAAAAASKAAAE/fwCAAAAAfsAAAAIAEQAaQBmAGYBAAAAAAAABP0AAACIAQAAAwAAAAEAAASKAAAE/fwCAAAAAfwAAAAAAAAE/QAAAPMA/////AIAAAAC+wAAAAYATABvAGcBAAAAAAAAAq0AAAB/AQAAA/wAAAKwAAACTQAAAHEA/////AEAAAAC+wAAAAoARgBpAGwAZQBzAQAABI0AAASKAAAAWwEAAAP7AAAACgBHAHIAYQBwAGgAAAAGyQAAAk4AAACvAQAAAwAAAAAAAAT9AAAABAAAAAQAAAAIAAAACPwAAAAA",
+            "count": 1000,
+            "log": {
+                "column_widths": [
+                    606,
+                    340,
+                    324
+                ]
+            }
+        },
+        "startupdialog": {
+            "geometry": "AdnQywADAAAAAAWgAAAAAAAACG8AAAGUAAAFoAAAAAAAAAhvAAABlAAAAAEAAAAACRcAAAWgAAAAAAAACG8AAAGU",
+            "width": 720,
+            "height": 405,
+            "x": 1440,
+            "y": 0
+        },
+        "preferencesview": {
+            "geometry": "AdnQywADAAAAAAWgAAAAAAAAB/cAAAItAAAFoAAAAAAAAAf3AAACLQAAAAEAAAAACRcAAAWgAAAAAAAAB/cAAAIt",
+            "width": 600,
+            "height": 558,
+            "x": 1440,
+            "y": 0
+        },
+        "messagebox": {
+            "geometry": "AdnQywADAAAAAAWgAAAAAAAACpoAAAFJAAAFoAAAAAAAAAqaAAABSQAAAAEAAAAACRcAAAWgAAAAAAAACpoAAAFJ",
+            "width": 1275,
+            "height": 330,
+            "x": 1440,
+            "y": 0
+        },
+        "selectcommits": {
+            "geometry": "AdnQywADAAAAAAWgAAAAAAAACksAAAPKAAAFoAAAAAAAAApLAAADygAAAAEAAAAACRcAAAWgAAAAAAAACksAAAPK",
+            "width": 1196,
+            "height": 971,
+            "x": 1440,
+            "y": 0
+        },
+        "customizecopyactions": {
+            "geometry": "AdnQywADAAAAAAZuAAAAAAAACFQAAAKDAAAGbgAAAAAAAAhUAAACgwAAAAEAAAAACgAAAAZuAAAAAAAACFQAAAKD",
+            "width": 487,
+            "height": 644,
+            "x": 1646,
+            "y": 0,
+            "columns": [
+                100,
+                375
+            ]
+        },
+        "stashview": {
+            "geometry": "AdnQywADAAAAAAWgAAAAAAAACz8AAALtAAAFoAAAAAAAAAs/AAAC7QAAAAEAAAAACRcAAAWgAAAAAAAACz8AAALt",
+            "width": 1440,
+            "height": 750,
+            "x": 1440,
+            "y": 0,
+            "keep_index": false,
+            "stash_index": false,
+            "sizes": [
+                714,
+                714
+            ]
+        },
+        "recentfiles": {
+            "geometry": "AdnQywADAAAAAAAAAAAAAAAABeAAAAPKAAAAAAAAAAAAAAXgAAADygAAAAAAAAAAB4AAAAAAAAAAAAAABeAAAAPK",
+            "width": 1505,
+            "height": 971,
+            "x": 0,
+            "y": 0
+        },
+        "grep": {
+            "geometry": "",
+            "width": 1824,
+            "height": 1050,
+            "x": 368,
+            "y": 225,
+            "sizes": [
+                482,
+                482
+            ]
+        },
+        "search": {
+            "geometry": "",
+            "width": 1196,
+            "height": 971,
+            "x": 682,
+            "y": 234
+        },
+        "comparebranchesdialog": {
+            "geometry": "",
+            "width": 1136,
+            "height": 708,
+            "x": 392,
+            "y": 216
+        },
+        "browser": {
+            "geometry": "",
+            "width": 1120,
+            "height": 648,
+            "x": 400,
+            "y": 215
+        },
+        "mainwindow": {
+            "geometry": "AdnQywADAAAAAAZuAAAAAAAAEG0AAAWBAAAGbgAAAK8AAAgWAAABoQAAAAECAAAACgAAAAZuAAAAAAAAEG0AAAWB",
+            "width": 2560,
+            "height": 1410,
+            "x": 1646,
+            "y": 0,
+            "lock_layout": false,
+            "windowstate": "AAAA/wAAAAD9AAAAAAAACgAAAAWCAAAABAAAAAQAAAAIAAAACPwAAAAA"
+        },
+        "selectcommitsandoutput": {
+            "geometry": "",
+            "width": 1807,
+            "height": 988,
+            "x": 0,
+            "y": 28
+        },
+        "difftool": {
+            "geometry": "",
+            "width": 877,
+            "height": 534,
+            "x": 841,
+            "y": 452
+        },
+        "createbranchdialog": {
+            "geometry": "AdnQywADAAAAAAZuAAAAAAAACywAAAMGAAAGbgAAAAAAAAssAAADBgAAAAEAAAAACgAAAAZuAAAAAAAACywAAAMG",
+            "width": 1215,
+            "height": 775,
+            "x": 1646,
+            "y": 0
+        },
+        "toolbarview": {
+            "geometry": "",
+            "width": 1807,
+            "height": 988,
+            "x": 0,
+            "y": 28
+        },
+        "finder": {
+            "geometry": "",
+            "width": 720,
+            "height": 445,
+            "x": 920,
+            "y": 497
+        },
+        "fetch": {
+            "geometry": "AdnQywADAAAAAAWgAAAAAAAAC4AAAAPKAAAFoAAAAAAAAAuAAAADygAAAAEAAAAACRcAAAWgAAAAAAAAC4AAAAPK",
+            "width": 1505,
+            "height": 971,
+            "x": 1440,
+            "y": 0,
+            "tags": false,
+            "prune": false
+        },
+        "pull": {
+            "geometry": "AdnQywADAAAAAAAAAAAAAAAABeAAAAPKAAAAAAAAAAAAAAXgAAADygAAAAAAAAAAB4AAAAAAAAAAAAAABeAAAAPK",
+            "width": 1505,
+            "height": 971,
+            "x": 0,
+            "y": 0,
+            "ff_only": true,
+            "no_ff": false,
+            "rebase": false
+        },
+        "remoteeditor": {
+            "geometry": "",
+            "width": 1505,
+            "height": 971,
+            "x": 527,
+            "y": 234
+        },
+        "applypatches": {
+            "geometry": "",
+            "width": 666,
+            "height": 420,
+            "x": 947,
+            "y": 540,
+            "sizes": [
+                144,
+                196
+            ]
+        },
+        "merge": {
+            "geometry": "",
+            "width": 1224,
+            "height": 737,
+            "x": 348,
+            "y": 202,
+            "no-ff": false,
+            "sign": false,
+            "commit": true
+        },
+        "browsebranch": {
+            "geometry": "",
+            "width": 720,
+            "height": 445,
+            "x": 590,
+            "y": 293
+        }
+    },
+    "recent": [],
+    "copy_formats": []
+}
