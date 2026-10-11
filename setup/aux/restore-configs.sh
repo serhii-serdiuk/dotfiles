@@ -158,12 +158,12 @@ _replace_system_dir_by_link() {
 stow_dotfiles() {
     log "Link dotfiles packages into home dir with stow"
     dotfiles_dir=$(realpath "$SETUP_DIR/..")
-    packages=( autostart bash clangd claude git konsave mpv nvim powerline pycodestyle ranger shell vim zsh )
+    packages=( autostart bash clangd claude dolphin git konsave mpv nvim powerline pycodestyle ranger shell vim zsh )
 
     # Must be real directories, otherwise stow replaces them by a single link into the repo
     # and files that other programs keep there land in the repo
     mkdir -p "$HOME/.config" "$HOME/.config/autostart" "$HOME/.config/konsave" "$HOME/.config/mpv" "$HOME/.config/ranger" "$HOME/.claude" \
-        "$HOME/.local/share/vim-lsp-settings"
+        "$HOME/.local/share/kxmlgui5" "$HOME/.local/share/vim-lsp-settings"
 
     # stow refuses to replace existing files, so keep them as .bak
     for package in ${packages[@]}; do
