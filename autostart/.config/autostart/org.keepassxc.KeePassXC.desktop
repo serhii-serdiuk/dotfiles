@@ -1,0 +1,15 @@
+[Desktop Entry]
+Categories=Utility;Security;Qt;
+Comment=Community-driven port of the Windows application “KeePass Password Safe”
+Exec=/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=keepassxc --file-forwarding org.keepassxc.KeePassXC @@ %f @@
+GenericName=Password Manager
+Icon=org.keepassxc.KeePassXC
+MimeType=application/x-keepass2;
+Name=KeePassXC
+SingleMainWindow=true
+StartupNotify=true
+StartupWMClass=keepassxc
+Terminal=false
+Type=Application
+X-Flatpak=org.keepassxc.KeePassXC
+X-GNOME-SingleWindow=true
