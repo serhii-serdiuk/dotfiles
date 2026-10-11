@@ -77,7 +77,6 @@ save:
             - plasmavaultrc
             - powermanagementprofilesrc
             - spectaclerc
-            - yakuakerc
 
     config_cursor:
         location: "$CONFIG_DIR/Cursor/User"

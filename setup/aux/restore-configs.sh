@@ -158,7 +158,7 @@ _replace_system_dir_by_link() {
 stow_dotfiles() {
     log "Link dotfiles packages into home dir with stow"
     dotfiles_dir=$(realpath "$SETUP_DIR/..")
-    packages=( autostart bash clangd claude dolphin git konsave konsole mpv nvim powerline pycodestyle ranger shell vim zsh )
+    packages=( autostart bash clangd claude dolphin git konsave konsole mpv nvim powerline pycodestyle ranger shell vim yakuake zsh )
 
     # Must be real directories, otherwise stow replaces them by a single link into the repo
     # and files that other programs keep there land in the repo

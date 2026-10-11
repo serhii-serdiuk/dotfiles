@@ -1,0 +1,40 @@
+[Behavior]
+RememberFullscreen=true
+
+[Desktop Entry]
+DefaultProfile=Profile 2 (zsh).profile
+
+[Dialogs]
+FirstRun=false
+
+[FileDialogSize]
+2 screens: Height=784
+2 screens: Width=1300
+
+[KFileDialog Settings]
+detailViewIconSize=16
+
+[Notification Messages]
+hinding_title_bar=false
+
+[Shortcuts]
+close-active-terminal=Ctrl+Shift+R;\s
+decrease-window-height=none
+decrease-window-width=none
+increase-window-height=none
+increase-window-width=none
+move-session-left=Alt+Shift+Left;\s
+move-session-right=Alt+Shift+Right;\s
+next-session=Alt+Right; Alt+Shift+L
+next-terminal=Ctrl+Tab;\s
+previous-session=Alt+Left; Alt+Shift+H
+previous-terminal=Ctrl+Shift+Tab;\s
+split-left-right=Ctrl+(; Ctrl+\\
+split-top-bottom=Ctrl+); Alt+\\
+view-full-screen=Ctrl+Shift+F11; F11
+
+[Window]
+DynamicTabTitles=true
+Height=40
+ShowSystrayIcon=false
+ShowTitleBar=false
