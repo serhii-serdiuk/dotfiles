@@ -76,7 +76,6 @@ save:
             - plasmashellrc
             - plasmavaultrc
             - powermanagementprofilesrc
-            - pycodestyle
             - spectaclerc
             - yakuakerc
 
