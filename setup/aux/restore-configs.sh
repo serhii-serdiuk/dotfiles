@@ -158,7 +158,7 @@ _replace_system_dir_by_link() {
 stow_dotfiles() {
     log "Link dotfiles packages into home dir with stow"
     dotfiles_dir=$(realpath "$SETUP_DIR/..")
-    packages=( autostart bash claude git konsave nvim shell vim zsh )
+    packages=( autostart bash clangd claude git konsave nvim shell vim zsh )
 
     # Must be real directories, otherwise stow replaces them by a single link into the repo
     # and files that other programs keep there land in the repo
