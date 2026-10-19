@@ -1589,7 +1589,8 @@ let g:lightline.component_type = {
 set background=dark
 set termguicolors  " enable true colors support
 
-colorscheme dracula
+" Using silent! since this theme is not installed yet on the very first start
+silent! colorscheme dracula
 " colorscheme onedark
 " let ayucolor="mirage"
 " colorscheme ayu
