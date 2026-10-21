@@ -784,6 +784,9 @@ Plug 'jasonccox/vim-wayland-clipboard'
 " Change working directory to project root
 Plug 'airblade/vim-rooter'
 
+" Per-project config (.lvimrc)
+Plug 'embear/vim-localvimrc'
+
 " Fuzzy find everything
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -871,6 +874,9 @@ endif
 " ===== vim-rooter plugin
 let g:rooter_patterns = ['.git', 'CMakeLists.txt', '.root', '=CraftRoot', '=gcc_64']
 " let g:rooter_resolve_links = 1
+
+" ===== vim-localvimrc plugin
+let g:localvimrc_persistent = 2
 
 " ===== fzf plugin
 " All files recursively from current working directory (pwd)
